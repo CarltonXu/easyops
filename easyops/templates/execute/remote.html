@@ -1,0 +1,28 @@
+<div class="row">
+  <div class="col-md-12" style="margin-left:10px;margin-bottom:30px;">
+    <h4>执行</h4>
+  </div>
+  <div class="col-md-5 cmd-container">
+    <form id="command_form">
+      <label>命令</label>
+      <input id="exec_cmd" name="cmd" type="text" placeholder="命令" value="{{ ex_cmd }}" required>
+      <label>远程主机</label></br>
+      <select id="remote_hosts">
+        {% for host in remote_hosts %}
+          <option value="{{ host.ipaddress }}">{{ host.hostname }} ({{ host.ipaddress }})</option>
+        {% endfor %}
+      </select></br>
+      <span>
+        <button id="exec_btn" class="btn btn-primary" name="submit" type="button" data-toggle="modal" data-target="#myModal" disabled="disable">执行</button>
+      </span>
+    </form>
+  </div>
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="width: 850px;">
+      <div class="modal-content">
+        {% include "execute/_results.html" %}
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+  </div>
+</div>
+<script type="text/javascript" src="{{ url_for("static", filename="js/execute.js") }}"></script> 

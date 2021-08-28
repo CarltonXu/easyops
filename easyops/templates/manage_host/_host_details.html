@@ -1,0 +1,172 @@
+<h2>资源属性</h2>
+<div class="basic_items">
+    <span class="basic_label">主机名称：</span>
+    <span id="display_name"></span>
+</div>
+<div class="basic_items">
+    <span class="basic_label">创建时间：</span>
+    <span id="create_time"></span>
+</div>
+{% if results %}
+  {% if results.get("unreachable") %}
+    <h1>获取主机信息失败，失败信息:</h1>
+    <textarea readonly autofocus style="background-color: black; color: white;resize: none;">{{ results.get("unreachable").get(host).get("msg") }}</textarea>
+  {% elif results.get("failed") %}
+    <h1>获取主机信息失败，失败信息:</h1>
+    <textarea>{{ results.get("failed").get(host).get("msg") }}</textarea>
+  {% elif not results.get("success") and results.get("ipaddress") %}
+    <h2>获取信息出现了问题，请稍后再试...</h2>
+  {% else %}
+    <h2>基础信息</h2>
+    <div class="basic_items">
+        <span class="basic_label">主机名：</span>
+        <span>{{ results.get("hostname") }}</span>
+    </div>
+    <div class="basic_items">
+        <span class="basic_label">运行时间：</span>
+        <span>{{ results.get("os_uptime_hours") }} hours</span>
+    </div>
+    <div class="basic_items">
+        <span class="basic_label">操作系统：</span>
+        <span>{{ results.get("sysinfo") }}</span>
+    </div>
+    <div class="basic_items">
+        <span class="basic_label">系统内核：</span>
+        <span>{{ results.get("os_kernel") }}</span>
+    </div>
+    <div class="basic_items">
+        <span class="basic_label">系统架构：</span>
+        <span>{{ results.get("architecture") }}</span>
+    </div>
+    <div class="basic_items">
+        <span class="basic_label">厂商：</span>
+        <span>{{ results.get("system_vendor") }}</span>
+    </div>
+    <div class="basic_items">
+        <span class="basic_label">型号：</span>
+        <span>{{ results.get("product_name") }}</span>
+    </div>
+    <h2>CPU信息</h2>
+    <div class="basic_items">
+        <span class="basic_label">CPU型号：</span>
+        <span>{{ results.get("cpu_processor") }}</span>
+    </div>
+    <div class="basic_items">
+        <span class="basic_label">颗数：</span>
+        <span>{{ results.get("cpu_count") }}</span>
+    </div>
+    <div class="basic_items">
+        <span class="basic_label">核数：</span>
+        <span>{{ results.get("cpu_cores") }}</span>
+    </div>
+    <div class="basic_items">
+        <span class="basic_label">虚拟CPU数量：</span>
+        <span>{{ results.get("cpu_processor_vcpus") }}</span>
+    </div>
+    <h2>内存信息</h2>
+    <div class="basic_items">
+        <span id="mem_totalmb" class="basic_label">内存总容量：</span>
+        <span>{{ results.get("memory_totalmb") }} MB</span>
+    </div>
+    <div class="basic_items">
+        <span id="mem_free" class="basic_label">内存剩余容量：</span>
+        <span>{{ results.get("memory_freemb") }} MB</span>
+    </div>
+    <div class="basic_items">
+        <span class="basic_label">内存使用率：</span>
+        <div class="mem_usage_container">
+            <div class="mem_usage">{{ results.get("memory_usage") }}%</div>
+        </div>
+    </div>
+    <h2>磁盘信息</h2>
+    {% for disk in results.get("disks").keys() %}
+    <div>
+        <div class="basic_items">
+            <strong>{{ disk }}</strong>
+        </div>
+        <div class="basic_items">
+            <span class="basic_label">总容量：</span>
+            <span>{{ results.get("disks")[disk]["size"] }}</span>
+        </div>
+        <div class="basic_items">
+            <span class="basic_label">厂商：</span>
+            <span>{{ results.get("disks")[disk]["vendor"] }}</span>
+        </div>
+        <div class="basic_items">
+            <span class="basic_label">类型：</span>
+            <span>{{ results.get("disks")[disk]["model"] }}</span>
+        </div>
+    </div>
+    {% endfor %}
+    <h2>挂载点信息</h2>
+    {% for device in results.get("mounts").keys() %}
+    <div>
+        <div class="basic_items">
+            <strong>{{ device }}</strong>
+        </div>
+        <div class="basic_items">
+            <span class="basic_label">分区类型：</span>
+            <span>{{ results.get("mounts")[device]["fstype"] }}</span>
+        </div>
+        <div class="basic_items">
+            <span class="basic_label">挂载点：</span>
+            <span>{{ results.get("mounts")[device]["mount"] }}</span>
+        </div>
+        <div class="basic_items">
+            <span class="basic_label">总容量：</span>
+            <span>{{ results.get("mounts")[device]["size_total"] }} GB</span>
+        </div>
+        <div class="basic_items">
+            <span class="basic_label">可用容量：</span>
+            <span>{{ results.get("mounts")[device]["size_available"] }} GB</span>
+        </div>
+        <div class="basic_items">
+            <span class="basic_label">容量使用率：</span>
+            <div class="mount_usage_container">
+                <div class="mount_usage">{{ results.get("mounts")[device]["size_usage"] }}%</div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+    <h2>网卡信息</h2>
+    {% for net in results.get("interfaces").keys() %}
+    <div>
+        <div class="basic_items">
+            <strong>{{ net }}</strong>
+        </div>
+        <div class="basic_items">
+            <span class="basic_label">IP 地址：</span>
+            <span>{{ results.get("interfaces")[net]["address"] }}</span>
+        </div>
+        <div class="basic_items">
+            <span class="basic_label">子网掩码：</span>
+            <span>{{ results.get("interfaces")[net]["netmask"] }}</span>
+        </div>
+        <div class="basic_items">
+            <span class="basic_label">MAC 地址：</span>
+            <span>{{ results.get("interfaces")[net]["macaddress"] }}</span>
+        </div>
+        <div class="basic_items">
+            <span class="basic_label">工作状态：</span>
+            <span>{{ results.get("interfaces")[net]["active"] }}</span>
+        </div>
+        <div class="basic_items">
+            <span class="basic_label">速率：</span>
+            <span>{{ results.get("interfaces")[net]["speed"] }} Mbps</span>
+        </div>
+        <div class="basic_items">
+            <span class="basic_label">MTU：</span>
+            <span>{{ results.get("interfaces")[net]["mtu"] }}</span>
+        </div>
+        <div class="basic_items">
+            <span class="basic_label">类型：</span>
+            <span>{{ results.get("interfaces")[net]["type"] }}net</span>
+        </div>
+        <div class="basic_items">
+            <span class="basic_label">适配器：</span>
+            <span>{{ results.get("interfaces")[net]["module"] }}</span>
+        </div>
+    </div>
+    {% endfor %}
+  {% endif %}
+{% endif %}

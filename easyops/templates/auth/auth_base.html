@@ -1,0 +1,15 @@
+{% block lgmenu %}
+  <div class="container">
+    <div class="row">
+      <div class="col-md-4 col-md-offset-7" style="margin-top: 20px;">
+        {% if g.user %}
+          <span class="glyphicon glyphicon-user""></span> {{ g.user["username"] }}
+          <span class="glyphicon glyphicon-log-out"></span> <a href="{{ url_for("api_v1_0.logout") }}">LogOut</a>
+        {% else %}
+          <a href="{{ url_for("api_v1_0.register") }}">Register</a>
+          <span class="glyphicon glyphicon-log-in"></span> <a href="{{ url_for("api_v1_0.login") }}">LogIn</a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+{% endblock %}

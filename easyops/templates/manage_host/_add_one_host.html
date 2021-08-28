@@ -1,0 +1,50 @@
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h4 class="modal-title" id="myModalLabel">
+        添加单个主机
+    </h4>
+</div>
+<div class="modal-body">
+    <form id="add_host_form" class="form-horizontal" role="form">
+        <div class="form-group">
+            <span style="padding-top: 18px;padding-right: 0px;" for="hostname" class="col-sm-3 control-label">主机名称</span>
+            <div class="col-sm-7">
+                <input type="text" name="hostname" class="form-control" id="manage_hostname" />
+            </div>
+        </div>
+        <div class="form-group">
+            <span style="padding-top: 18px;padding-right: 0px;" for="password" class="col-sm-3 control-label">所属组</span>
+            <div class="col-sm-7">
+                <input type="text" name="group" class="form-control" id="manage_group" />
+            </div>
+        </div>
+        <div class="form-group">
+            <span style="padding-top: 18px;padding-right: 0px;" for="ipaddress" class="col-sm-3 control-label">IP地址</span>
+            <div class="col-sm-7">
+                <input type="text" name="ipaddress" class="form-control" id="manage_ipaddr" />
+            </div>
+        </div>
+        <div class="form-group">
+            <span style="padding-top: 18px;padding-right: 0px;" for="port" class="col-sm-3 control-label">端口号</span>
+            <div class="col-sm-7">
+                <input type="text" name="port" class="form-control" id="manage_port" value="22"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <span style="padding-top: 18px;padding-right: 0px;" for="username" class="col-sm-3 control-label">访问用户</span>
+            <div class="col-sm-7">
+                <input type="text" name="username" class="form-control" id="manage_user" />
+            </div>
+        </div>
+        <div class="form-group">
+            <span style="padding-top: 18px;padding-right: 0px;" for="password" class="col-sm-3 control-label">管理密码</span>
+            <div class="col-sm-7">
+                <input type="password" name="password" class="form-control" id="manage_password" />
+            </div>
+        </div>
+    </form>
+</div>
+<div class="modal-footer">
+     <input id="manage_close_btn" class="btn btn-primary" type="button" data-dismiss="modal" value="关闭">
+     <input id="manage_btn" class="btn btn-primary" type="button" value="提交" disabled="disable">
+</div>
