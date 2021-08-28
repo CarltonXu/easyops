@@ -1,2 +1,3 @@
 /.venv
 /workspace.easyops.code-workspace
+/*.pyc
