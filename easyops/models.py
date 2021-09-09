@@ -57,3 +57,19 @@ class AnsibleHosts(BaseModel, db.Model):
     username = db.Column(db.String(100))
     password = db.Column(db.String(100))
     group = db.Column(db.String(100))
+
+class Storages(BaseModel, db.Model):
+    __tablename__ = 'storages'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100))
+    type = db.Column(db.String(100))
+    provider = db.Column(db.String(100))
+    region = db.Column(db.String(100))
+    access_key_id = db.Column(db.String(100))
+    secret_access_key = db.Column(db.String(100))
+    endpoint = db.Column(db.String(100))
+    acl = db.Column(db.String(100))
+    storclass = db.Column(db.String(100))
+    upload_cutoff = db.Column(db.String(100))
+    chunk_size = db.Column(db.String(100))
+    upload_checksum = db.Column(db.Boolean, default=False)

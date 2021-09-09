@@ -27,7 +27,7 @@ def manage_host():
         return render_template("manage_host/host.html", hosts_info=hosts_info)
 
 
-@api.route("/add", methods=["POST"])
+@api.route("/host/add", methods=["POST"])
 def add_host():
     if request.method == "POST":
         form = request.form
@@ -62,12 +62,12 @@ def add_host():
         return redirect(url_for("api_v1_0.manage_host"))
 
 
-@api.route("/getexcel", methods=["GET"])
+@api.route("/host/getexcel", methods=["GET"])
 def get_excel():
     return send_from_directory(EXCEL_DIR, "servers_example.xlsx", as_attachment=True)
 
 
-@api.route("/batch_add", methods=["POST"])
+@api.route("/host/batch_add", methods=["POST"])
 def add_host_from_excel():
     file = request.files.get("file")
     file_size = request.files.get("filesize")
@@ -101,7 +101,7 @@ def add_host_from_excel():
     return redirect(url_for("api_v1_0.manage_host"))
     
 
-@api.route("/delete", methods=["POST"])
+@api.route("/host/delete", methods=["POST"])
 def delete_host():
     if request.method == "POST":
         form = request.form  
@@ -117,7 +117,7 @@ def delete_host():
 
         return redirect(url_for("api_v1_0.manage_host"))
 
-@api.route("/update", methods=["POST"])
+@api.route("/host/update", methods=["POST"])
 def update_host():
     if request.method == "POST":
         form = request.form

@@ -7,6 +7,48 @@
 
         let currentActive = 1
 
+        var sleep = function(time) {
+            return new Promise(resolve => {
+                setTimeout(() => {
+                    resolve();
+                }, time);
+            });
+        }
+
+        $("#select_all_storages").on("click", function() {
+            var check_num = $("tbody td:first-child input").filter(":checked").length;
+            if ($(this).attr("checked") == "checked") {
+                $(this).attr("checked", false)
+                $("tbody td:first-child input").prop("checked", false);
+                ChangeButtonStatus()
+            } else {
+                $(this).attr("checked", true)
+                $("tbody td:first-child input").prop("checked", true);
+                $("#delete_storage").attr("disabled", false)
+                ChangeButtonStatus()
+            };
+        });
+
+        $("tbody td:first-child input").on("click", function() {
+            if ($(this)[0].checked) {
+                ChangeButtonStatus()
+            } else {
+                ChangeButtonStatus()
+            };
+        });
+
+        var ChangeButtonStatus = function() {
+            var check_num = $("tbody td:first-child input").filter(":checked").length;
+            if (check_num > 1) {
+                $("#delete_storage").attr("disabled", false);
+            } else if (check_num <= 0) {
+                $("#delete_storage").attr("disabled", true);
+                $("#select_all_storages").attr("checked", false);
+            } else if (check_num == 1){
+                $("#delete_storage").attr("disabled", false); 
+            };
+        };
+
         var change_storage_provider_content = function() {
             var storage_type = $(".storage_type select").val();
             if (storage_type == "s3") {
@@ -25,8 +67,6 @@
                 };
             });
         
-            // const actives = document.querySelectorAll('.active')
-
             const actives = circles.filter(".active");
         
             progress.css("width", (actives.length - 1) / (circles.length - 1) * 100 + '%')
@@ -72,14 +112,6 @@
             } else {
                 $("#storage_next_btn").attr("disabled", false);
             };
-            /*
-            var storage_name = $(".storage_name input").val();
-            if (storage_name == "") {
-                $("#storage_next_btn").attr("disabled", true);
-            } else {
-                $("#storage_next_btn").attr("disabled", false);
-            };
-            */
         }).keyup(function(){
             $(this).triggerHandler("blur");
         }).focus(function(){
@@ -151,13 +183,38 @@
                 processData: false,
                 contentType: false,
                 success: function(data) {
+                    $("#storage_close_btn").click()
                     toastr.success("Add storage successfully");
-                    $("#context").html(data);
+                    sleep(300).then(() => {
+                        $("#context").html(data);
+                    });
                 },
                 error: function(data) {
-                    toastr.error("Add storage failed")
+                    toastr.error(data.responseText)
                 }
             });
         });
+
+        $("#delete_storage").on("click", (function() {
+            var obj_parents = $("tbody td:first-child input").filter(":checked").parent()
+            var selectdata = {}
+            for (var n = 0; n < obj_parents.length; n++) {
+                selectdata[n] = obj_parents[n].siblings()[0].innerHTML
+            };
+            if (confirm("是否确定删除存储?")) {
+                $.ajax({
+                    type: "POST",
+                    url: "/api/v1.0/storage/delete",
+                    data: selectdata,
+                    success: function(data) {
+                       $("#context").html(data);
+                       toastr.success("Delete host successful."); 
+                    },
+                    error: function() {
+                        toastr.error("Delete hosts failed.");
+                    }
+                });
+            };
+        }));
     });
 })(jQuery);

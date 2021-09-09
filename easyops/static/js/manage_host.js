@@ -124,7 +124,7 @@
             var formdata = objectifyForm(formdata);
             $.ajax({
                 type: "POST",
-                url: "/api/v1.0/add",
+                url: "/api/v1.0/host/add",
                 data: formdata,
                 success: function(data) {
                     toastr.success("Add remote host successful.");
@@ -151,7 +151,7 @@
             var data = formFile
             $.ajax({
                 type: "POST",
-                url: "/api/v1.0/batch_add",
+                url: "/api/v1.0/host/batch_add",
                 data: data,
                 processData: false,
                 contentType: false,
@@ -177,7 +177,7 @@
             if (confirm("是否确定删除主机?")) {
                 $.ajax({
                     type: "POST",
-                    url: "/api/v1.0/delete",
+                    url: "/api/v1.0/host/delete",
                     data: selectdata,
                     success: function(data) {
                        $("#context").html(data);
@@ -189,6 +189,7 @@
                 });
             };
         }));
+
         $("#update_host").on("click", (function() {
            var update_host_obj = $("tbody td:first-child input").filter(":checked").parent() 
            var update_host_siblings = update_host_obj[0].siblings()
@@ -215,7 +216,7 @@
             var formdata = objectifyForm(formdata);
             $.ajax({
                 type: "POST",
-                url: "/api/v1.0/update",
+                url: "/api/v1.0/host/update",
                 data: formdata,
                 success: function(data) {
                     toastr.success("Add remote host successful.");

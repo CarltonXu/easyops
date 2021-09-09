@@ -1,8 +1,11 @@
 <div class="row">
 	<div class="col-md-12">
-        <button type="button" class="btn btn-primary add_storage_btn" href="#modal-container-add-stroage" role="button" data-toggle="modal">
-		    <span>添加存储</span>
-		</button>
+		<div class="btn-group">
+            <button type="button" class="btn btn-primary add_storage_btn" href="#modal-container-add-stroage" role="button" data-toggle="modal">
+		        <span>添加存储</span>
+		    </button>
+			<button type="button" id="delete_storage" class="btn btn-danger" disabled="disabled">删除</button>
+		</div>
         <div class="modal fade" id="modal-container-add-stroage" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
             <div class="modal-dialog" style="width: 800px;">
              <div class="modal-content">
@@ -15,11 +18,13 @@
     	<table class="table table-striped">
     		<thead>
     			<tr>
-    			<th><input type="checkbox" id="select_all"></th>
+    			<th><input type="checkbox" id="select_all_storages"></th>
     			<th>存储名称</th>
     			<th>存储类型</th>
-    			<th>管理用户</th>
+    			<th>提供商</th>
     			<th>访问密钥</th>
+    			<th>Endpoint</th>
+    			<th>ACL</th>
     			<th>添加时间</th>
     			</tr>
     		</thead>
@@ -28,8 +33,10 @@
     				<td><input type="checkbox"></td>
     				<td>{{ storage.name }}</td>
     				<td>{{ storage.type }}</td>
-    				<td>{{ storage.username }}</td>
-    				<td>{{ storage.accesskey }}</td>
+    				<td>{{ storage.provider }}</td>
+    				<td>{{ storage.access_key_id }}</td>
+    				<td>{{ storage.endpoint }}</td>
+    				<td>{{ storage.acl }}</td>
     				<td>{{ storage.create_time }}</td>
     			</tr>
     			{% endfor %}
