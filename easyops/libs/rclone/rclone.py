@@ -4,6 +4,7 @@
 A Python wrapper for rclone.
 """
 
+import logging
 import subprocess
 import tempfile
 
@@ -13,7 +14,10 @@ class RClone:
     """
 
     def __init__(self, cfg):
-        self.cfg = cfg.replace("\\n", "\n")
+        if not cfg:
+            self.cfg = ""
+        else:
+            self.cfg = cfg.replace("\\n", "\n")
         self.log = logging.getLogger("RClone")
 
     def _execute(self, command_with_args):
@@ -113,6 +117,14 @@ class RClone:
         """
         return self.run_cmd(command="ls", extra_args=[dest] + flags)
 
+    def lsf(self, dest, flags=[]):
+        """
+        Executes: rclone lsf remote:path [flags]
+        Args:
+        - dest (string): A string "remote:path" representing the location to list.
+        """
+        return self.run_cmd(command="lsf", extra_args=[dest] + flags)
+
     def lsjson(self, dest, flags=[]):
         """
         Executes: rclone lsjson remote:path [flags]
@@ -128,6 +140,14 @@ class RClone:
         - dest (string): A string "remote:path" representing the location to delete.
         """
         return self.run_cmd(command="delete", extra_args=[dest] + flags)
+
+    def rmdir(self, dest, flags=[]):
+        """
+        Executes: rclone rmdir remote:path
+        Args:
+        - dest (string): A empty directory "remote:path" representing the location to delete.
+        """
+        return self.run_cmd(command="rmdir", extra_args=[dest] + flags)
 
 
 def with_config(cfg):

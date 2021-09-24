@@ -1,3 +1,6 @@
+humanfriendly==10.0
+request==1.0.117
+sarge==0.1.6
 flask==0.12.5
 Jinja2==3.0.1
 flask-sqlalchemy==2.5.1

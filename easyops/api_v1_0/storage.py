@@ -71,6 +71,7 @@ def add_storage():
             upload_checksum=bool(checksum)
         )
         if provider == "Alibaba":
+            
             try:
                 if Storages.query.filter_by(name=name).first() or Storages.query.filter_by(access_key_id=access_key_id).first():
                     response = make_response("已经存在的存储", 500)
@@ -85,7 +86,6 @@ def add_storage():
 
 @api.route("/storage/delete", methods=["POST"])
 def delete_storage():
-    import pdb;pdb.set_trace()
     form = request.form
     storages = [ form.to_dict()[h] for h in form.to_dict() ]
     for stor_name in storages:
