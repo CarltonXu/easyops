@@ -135,8 +135,12 @@ def serve_file(remote_cfg, remote_name, remote_type, path):
 def read_sftp_remote_cfg(cfg_path):
     with open(cfg_path, 'r') as f:
         sftp_cfg = f.read()
-    os.remove(cfg_path)
     return sftp_cfg
+
+def delete_sftp_remote(remote):
+    rclone.with_config("")._execute([
+        "rclone", "config", "delete", "%s"%(remote)
+        ]).get('code')
 
 def get_remote_cfg(remote_name, remote_type=""):
     if remote_type == "sftp":
@@ -152,6 +156,7 @@ def get_remote_cfg(remote_name, remote_type=""):
                 "pass=%s"%(remote_data.password)
                 ]).get("code") == 0:
                 sftp_cfg = read_sftp_remote_cfg(sftp_cfg_path)
+                delete_sftp_remote(remote_name)
                 return sftp_cfg
     else:
         if Storages.query.filter_by(name=remote_name).first():
@@ -207,8 +212,8 @@ def show_directory(remote_cfg, remote_name, remote_type, path):
     return render_template('datasync/_file_manager.html', remote=remote_name.split(":")[0], path_links=path_links, file_list=file_list)
 
 
-@api.route("/datasync/",  defaults={"path": "", "remote": ""}, methods=["GET", "POST"])
-@api.route("/datasync/<string:remote>/",  defaults={"path": ""}, methods=["GET", "POST"])
+@api.route("/datasync/", defaults={"path": "", "remote": ""}, methods=["GET", "POST"])
+@api.route("/datasync/<string:remote>/", defaults={"path": ""}, methods=["GET", "POST"])
 @api.route("/datasync/<string:remote>/<path:path>/", methods=["GET", "POST"])
 def remote_home(remote, path):
     if request.method == "POST":

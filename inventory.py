@@ -61,16 +61,14 @@ def query_ansible_hosts():
             }
     hosts["all"] = {"children": groups}
     hosts["_meta"] = {"hostvars": hostvars}
+    hosts["hosts"] = [host.ipaddress for host in remote_hosts if host.group == ""]
     for group in groups:
         hosts[group] = {}
         hosts[group]["hosts"] = []
-        hosts["hosts"] = []
         for host in remote_hosts:
             if host.group == group:
                 hosts[group]["hosts"].append(host.ipaddress)
-            else:
-                if host.group == "":
-                    hosts["hosts"].append(host.ipaddress)
+
     return json.dumps(hosts,indent=3)
 
 def main():
