@@ -273,7 +273,6 @@
                         for (var x = 0; x < mount_usage_obj.length; x++) {
                             var mount_pro_value = mount_usage_obj[x].innerText.split("%")[0];
                             var mount_pro_width = ((mount_container_pro_width - 4) * (mount_pro_value / 100));
-                            console.log(mount_pro_value, mount_pro_width)
                             if (mount_pro_value >= 0 && mount_pro_value <= 30) {
                                 mount_usage_obj[x].after(mount_usage_obj[x].innerText);
                                 mount_usage_obj[x].innerText = "";

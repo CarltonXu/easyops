@@ -7,7 +7,14 @@
 1. 登陆注册
 2. 添加管理主机
 3. 对管理主机进行远程Ansible命令执行
-4. 添加云存储
+4. 添加云对象存储
+  
+     4.1.可以以支持添加的云存储类型，目前为s3协议
+     - 阿里云：支持
+     - 腾讯云：支持中
+     - 华为云：支持中
+     - AWS：支持中
+
 5. 数据同步，基于rclone模块进行云数据存储之间的互传
 
 单前版本暂时支持以上几个功能，后续还会持续增加其他功能
@@ -23,7 +30,16 @@
 ![](https://tva1.sinaimg.cn/large/008i3skNgy1gtx0x9r4gfj627w0twn1m02.jpg)
 
 ### 1.4. 项目功能截图03-存储管理
-![](https://tva1.sinaimg.cn/large/008i3skNgy1gtx0xst4mzj61vb0u0di202.jpg)
+![](https://tva1.sinaimg.cn/large/008i3skNly1guttnrqmyoj627q0n4dj502.jpg)
+
+#### 1.4.1. 添加存储-选择存储类型
+![](https://tva1.sinaimg.cn/large/008i3skNly1guttp8syuej618c0q8gn502.jpg)
+
+#### 1.4.2. 添加存储-配置存储参数
+![](https://tva1.sinaimg.cn/large/008i3skNly1guttprzmmlj61370u0taj02.jpg)
+
+#### 1.4.3. 添加存储-高级配置参数
+![](https://tva1.sinaimg.cn/large/008i3skNly1guttq7vrs1j618c0nqjt202.jpg)
 
 ### 1.5. 项目功能截图04-远程执行
 ![](https://tva1.sinaimg.cn/large/008i3skNgy1gtx0ydcm3xj61zq0u0acg02.jpg)
@@ -31,6 +47,22 @@
 ![](https://tva1.sinaimg.cn/large/008i3skNgy1gtx0yw2xcrj61ca0u00xg02.jpg)
 
 ### 1.6. 项目功能截图05-数据同步
+
+![](https://tva1.sinaimg.cn/large/008i3skNly1guttstoffcj623d0u0dji02.jpg)
+
+#### 1.6.1. 获取对象存储数据
+![](https://tva1.sinaimg.cn/large/008i3skNly1guttvct9o6j61m20u0dk002.jpg)
+
+#### 1.6.2. 获取主机文件数据
+![](https://tva1.sinaimg.cn/large/008i3skNly1guttw5g0evj61lk0u0adk02.jpg)
+
+#### 1.6.3. 存储之间的数据同步
+开发中...
+
+#### 1.6.4. 存储内文件删除
+开发中...
+
+#### 1.6.5. 存储内文件上传
 开发中...
 
 # 2. 项目运行

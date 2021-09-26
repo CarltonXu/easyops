@@ -62,10 +62,13 @@ def sort_directory_list(a, b):
         return -1
     return 0
 
-def get_data(remote_cfg, remote, path, begin, end):
+def get_data(remote_cfg, remote_name, remote_type, path, begin, end):
     # TODO: exponential increase/backoff
     # make this configurable
-    remote_path = "{}{}".format(remote, path)
+    if remote_type == "sftp":
+        remote_path = "{}{}".format(remote_name, "/" + path)
+    else:
+        remote_path = "{}{}".format(remote_name, path)
     chunk_size = 1000000
     current_pointer = begin
 
@@ -91,8 +94,11 @@ def get_data(remote_cfg, remote, path, begin, end):
                 data = p.stdout.read(100000)
             cfg_file.close()
 
-def serve_file(remote_cfg, remote, path):
-    remote_path = "{}{}".format(remote, path)
+def serve_file(remote_cfg, remote_name, remote_type, path):
+    if remote_type == "sftp":
+        remote_path = "{}{}".format(remote_name, "/" + path)
+    else:
+        remote_path = "{}{}".format(remote_name, path)
     file_metadata = rclone.with_config(remote_cfg).lsjson(remote_path).get("out")
     file_json = json.loads(file_metadata)[0]
 
@@ -118,7 +124,7 @@ def serve_file(remote_cfg, remote, path):
     headers.add('Accept-Ranges', 'bytes')
 
     rsp = Response(
-        get_data(remote_cfg, remote, path, begin, end),
+        get_data(remote_cfg, remote_name, remote_type, path, begin, end),
         status,
         headers=headers,
         mimetype=mime,
@@ -132,7 +138,7 @@ def read_sftp_remote_cfg(cfg_path):
     os.remove(cfg_path)
     return sftp_cfg
 
-def get_remote_cfg(remote_name, remote_type):
+def get_remote_cfg(remote_name, remote_type=""):
     if remote_type == "sftp":
         if AnsibleHosts.query.filter_by(hostname=remote_name).first():
             remote_data = AnsibleHosts.query.filter_by(hostname=remote_name).first()
@@ -157,15 +163,21 @@ def show_all_remotes():
     remotes_sftp_storages = AnsibleHosts.query.all()
     return remotes_object_storages, remotes_sftp_storages
 
-def is_directory(remote_cfg, remote, path):
-    remote_path = "{}{}".format(remote, path)
+def is_directory(remote_cfg, remote_name, remote_type, path):
+    if remote_type == "sftp":
+        remote_path = "{}{}".format(remote_name, "/" + path)
+    else:
+        remote_path = "{}{}".format(remote_name, path)
     if rclone.with_config(remote_cfg).rmdir(remote_path,flags=["--dry-run"]).get("code") == 0:
         return True
     else:
         return False
 
-def show_directory(remote_cfg, remote, path):
-    remote_path = "{}{}".format(remote, path)
+def show_directory(remote_cfg, remote_name, remote_type, path):
+    if remote_type == "sftp":
+        remote_path = "{}{}".format(remote_name, "/" + path)
+    else:
+        remote_path = "{}{}".format(remote_name, path)
     file_list_data = rclone.with_config(remote_cfg).lsf(remote_path, flags=["--format", "psm"]).get("out").decode()
     file_list = []
     for item in file_list_data.split('\n'):
@@ -192,7 +204,7 @@ def show_directory(remote_cfg, remote, path):
         path_links.append((token, href))
 
     # TODO: show number of items or size?
-    return render_template('datasync/_file_manager.html', remote=remote.split(":")[0], path_links=path_links, file_list=file_list)
+    return render_template('datasync/_file_manager.html', remote=remote_name.split(":")[0], path_links=path_links, file_list=file_list)
 
 
 @api.route("/datasync/",  defaults={"path": "", "remote": ""}, methods=["GET", "POST"])
@@ -201,13 +213,18 @@ def show_directory(remote_cfg, remote, path):
 def remote_home(remote, path):
     if request.method == "POST":
         remote_type = request.form.to_dict()["type"]
+    else:
+        if AnsibleHosts.query.filter_by(hostname=remote).first():
+            remote_type = "sftp"
+        else:
+            remote_type = "s3"
+    if not path:
+        path = "/"
     if not remote:
         remote_objs, remote_sftps = show_all_remotes()
         return render_template("datasync/sync.html", remote_objs=remote_objs, remote_sftps=remote_sftps)
-    if not path:
-        path = "/"
     remote_cfg = get_remote_cfg(remote, remote_type)
     remote = remote + ":"
-    if is_directory(remote_cfg, remote, path):
-        return show_directory(remote_cfg, remote, path)
-    return serve_file(remote_cfg, remote, path)
+    if is_directory(remote_cfg, remote, remote_type, path):
+        return show_directory(remote_cfg, remote, remote_type, path)
+    return serve_file(remote_cfg, remote, remote_type, path)

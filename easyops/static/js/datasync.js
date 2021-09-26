@@ -29,13 +29,14 @@
 
         $("body").delegate("table > tbody > tr > td:nth-child(2) > a", "mouseover", function(event) {
             var remote_url = new Array();
-            remote_url[0] = $(this).attr("value");
-            if (remote_url[0] == "") {
-                return
+            if ($(this).attr("value") == "") {
+                return;
             } else {
+                remote_url[0] = $(this).attr("value");
                 if ($(this).prev().attr("class") == "glyphicon glyphicon-file") {
                     $(this).attr("href", window.document.location.origin + remote_url[0]);
                     $(this).attr("target", "_blank");
+                    $(this).attr("download", remote_url[0].split("/").slice(-2)[0]);
                     $(this).attr("value", "");
                 };
             };
