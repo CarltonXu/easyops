@@ -72,27 +72,27 @@ def get_data(remote_cfg, remote_name, remote_type, path, begin, end):
     chunk_size = 1000000
     current_pointer = begin
 
-    while current_pointer <= end:
-        if current_pointer + chunk_size > end:
-            chunk_size = end - current_pointer
-        elif current_pointer == end:
-            chunk_size = 1
+    with tempfile.NamedTemporaryFile(mode='wt', delete=True) as cfg_file:
+        cfg_file.write(remote_cfg)
+        cfg_file.flush()
+        while current_pointer <= end:
+            if current_pointer + chunk_size > end:
+                chunk_size = end - current_pointer
+            elif current_pointer == end:
+                chunk_size = 1
 
-        with tempfile.NamedTemporaryFile(mode='wt', delete=True) as cfg_file:
             # TODO: unsure if the math here is right
             cmd = "rclone cat %s --config %s --offset %s --count %s" %(remote_path, cfg_file.name, str(current_pointer), str(chunk_size))
             print(cmd)
             print(begin, end, current_pointer, chunk_size)
             current_pointer += chunk_size
-            cfg_file.write(remote_cfg)
-            cfg_file.flush()
             p = run(cmd, stdout=Capture(), async_=False)
             data = p.stdout.read(100000)
             while data:
                 print('Read chunk: %d bytes' % (len(data)))
                 yield data
                 data = p.stdout.read(100000)
-            cfg_file.close()
+        cfg_file.close()
 
 def serve_file(remote_cfg, remote_name, remote_type, path):
     if remote_type == "sftp":

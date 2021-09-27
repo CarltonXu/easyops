@@ -30,8 +30,10 @@ def get_storage_type():
         storage_provider = storages_data.get("storage_provider")
         if storage_provider == "Alibaba":
             return render_template("storage/_s3-aliyun.html")
-        elif storage_provider == "s3-aws":
-            pass
+        elif storage_provider == "TencentCOS":
+            return render_template("storage/_s3-tencent.html")
+        elif storage_provider == "AWS":
+            return render_template("storage/_s3-aws.html")
     else:
         response = make_response("暂不支持驱动类型", 500)
         return response
@@ -43,7 +45,7 @@ def add_storage():
     name = storages_data.get("storage_name")
     storage_type = storages_data.get("storage_type")
     provider = storages_data.get("storage_provider")
-    region = storages_data.get("storage_region")
+    region = storages_data.get("region")
     access_key_id = storages_data.get("access_key_id")
     secret_access_key = storages_data.get("secret_access_key")
     endpoint = storages_data.get("endpoint")
@@ -70,19 +72,18 @@ def add_storage():
             chunk_size=chunk_size,
             upload_checksum=bool(checksum)
         )
-        if provider == "Alibaba":
-            
-            try:
-                if Storages.query.filter_by(name=name).first() or Storages.query.filter_by(access_key_id=access_key_id).first():
-                    response = make_response("已经存在的存储", 500)
-                    return response
-                db.session.add(storage) 
-                db.session.commit()
-            except Exception as err:
-                logging.error(err)
-                response = make_response("添加主机失败，请重试", 500)
+
+        try:
+            if Storages.query.filter_by(name=name).first() or Storages.query.filter_by(access_key_id=access_key_id).first():
+                response = make_response("已经存在的存储", 500)
                 return response
-            return redirect(url_for("api_v1_0.storage_manage"))
+            db.session.add(storage) 
+            db.session.commit()
+        except Exception as err:
+            logging.error(err)
+            response = make_response("添加主机失败，请重试", 500)
+            return response
+        return redirect(url_for("api_v1_0.storage_manage"))
 
 @api.route("/storage/delete", methods=["POST"])
 def delete_storage():
