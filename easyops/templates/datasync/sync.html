@@ -10,7 +10,7 @@
 	      </h4>
 	      <ul class="nav flex-column mb-2">
 	  	  {% for remote_obj in remote_objs %}
-	  	  <li class="nav-item">
+	  	  <li class="nav-item" style="background-color: #f2f2f2;border-bottom: solid 2px #f8f9fa;">
 	  	    <a class="nav-link" href="#">
 	  	  	<span data-feather="file-text"></span>
 	  	  	  {{ remote_obj.name }}: ({{ remote_obj.type }})
@@ -30,7 +30,7 @@
 	      </h4>
 	      <ul class="nav flex-column mb-2">
 	  	  {% for remote_sftp in remote_sftps %}
-	  	  <li class="nav-item">
+	  	  <li class="nav-item" style="background-color: #f2f2f2;border-bottom: solid 2px #f8f9fa;">
 	  	    <a class="nav-link" href="#">
 	  	  	<span data-feather="file-text"></span>
 	  	  	  {{ remote_sftp.hostname }}: (sftp)

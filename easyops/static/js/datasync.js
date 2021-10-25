@@ -27,6 +27,7 @@
             });
         });
 
+        /*
         $("body").delegate("table > tbody > tr > td:nth-child(2) > a", "mouseover", function(event) {
             var remote_url = new Array();
             if ($(this).attr("value") == "") {
@@ -41,6 +42,7 @@
                 };
             };
         });
+        */
 
         $("body").delegate("table > tbody > tr > td:nth-child(2) > a", "click", function() {
             var remote_url = $(this).attr("value");
@@ -61,9 +63,9 @@
         });
 
         $("body").delegate("#file_manager_context > p > a", "click", function() {
-            var remote_url = $(this).attr("value")
-            var remote_name = remote_url.split("datasync/")[1].split("/")[0]
-            var remote_type = SearchRemotesType(remote_name)
+            var remote_url = $(this).attr("value");
+            var remote_name = remote_url.split("datasync/")[1].split("/")[0];
+            var remote_type = SearchRemotesType(remote_name);
             $.ajax({
                 type: "POST",
                 url: remote_url,
@@ -75,6 +77,26 @@
                     toastr.error("Failed to obtain the page resource!");
                 }
             });
+        });
+
+        $("body").delegate(".delete_file_menu", "click", function() {
+            var remote_url = $(this).attr("value");
+            var remote_name = remote_url.split("datasync/")[1].split("/")[0];
+            var remote_type = SearchRemotesType(remote_name);
+            var tips_msg = "是否确定删除 " + remote_url.split("/").slice(-2)[0] + " 文件或目录?"
+            if (confirm(tips_msg)) {
+                $.ajax({
+                    type: "DELETE",
+                    url: remote_url,
+                    data: {"type": remote_type},
+                    success: function(data) {
+                        $("#file_manager_context").html(data);
+                    },
+                    error: function(data) {
+                        toastr.error("Failed to Delete the remote resource!");
+                    }
+                });
+            };
         });
     });
 })(jQuery);

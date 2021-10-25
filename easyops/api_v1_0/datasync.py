@@ -168,15 +168,29 @@ def show_all_remotes():
     remotes_sftp_storages = AnsibleHosts.query.all()
     return remotes_object_storages, remotes_sftp_storages
 
-def is_directory(remote_cfg, remote_name, remote_type, path):
+def format_remote_path_by_type(remote_type, remote_name, path):
     if remote_type == "sftp":
         remote_path = "{}{}".format(remote_name, "/" + path)
     else:
         remote_path = "{}{}".format(remote_name, path)
+    return remote_path
+
+def is_directory(remote_cfg, remote_name, remote_type, path):
+    remote_path = format_remote_path_by_type(remote_type, remote_name, path)
     if rclone.with_config(remote_cfg).rmdir(remote_path,flags=["--dry-run"]).get("code") == 0:
         return True
     else:
         return False
+
+def delete_remote_file_or_directory(remote_cfg, remote_name, remote_type, path):
+    remote_path = format_remote_path_by_type(remote_type, remote_name, path)
+    if is_directory(remote_cfg, remote_name, remote_type, path):
+        exec_code = rclone.with_config(remote_cfg).rmdir(remote_path).get("code")
+    else:
+        exec_code = rclone.with_config(remote_cfg).delete(remote_path).get("code")
+
+    return exec_code
+
 
 def show_directory(remote_cfg, remote_name, remote_type, path):
     if remote_type == "sftp":
@@ -212,11 +226,11 @@ def show_directory(remote_cfg, remote_name, remote_type, path):
     return render_template('datasync/_file_manager.html', remote=remote_name.split(":")[0], path_links=path_links, file_list=file_list)
 
 
-@api.route("/datasync/", defaults={"path": "", "remote": ""}, methods=["GET", "POST"])
-@api.route("/datasync/<string:remote>/", defaults={"path": ""}, methods=["GET", "POST"])
-@api.route("/datasync/<string:remote>/<path:path>/", methods=["GET", "POST"])
+@api.route("/datasync/", defaults={"path": "", "remote": ""}, methods=["GET", "DELETE", "POST"])
+@api.route("/datasync/<string:remote>/", defaults={"path": ""}, methods=["GET", "DELETE", "POST"])
+@api.route("/datasync/<string:remote>/<path:path>/", methods=["GET", "DELETE", "POST"])
 def remote_home(remote, path):
-    if request.method == "POST":
+    if request.method == "POST" and request.method == "DELETE":
         remote_type = request.form.to_dict()["type"]
     else:
         if AnsibleHosts.query.filter_by(hostname=remote).first():
@@ -230,6 +244,15 @@ def remote_home(remote, path):
         return render_template("datasync/sync.html", remote_objs=remote_objs, remote_sftps=remote_sftps)
     remote_cfg = get_remote_cfg(remote, remote_type)
     remote = remote + ":"
-    if is_directory(remote_cfg, remote, remote_type, path):
+    if request.method == "DELETE":
+        code = delete_remote_file_or_directory(remote_cfg, remote, remote_type, path)
+        prev_path = path[0:path.rfind('/', 1)]
+        if path == prev_path:
+            path = "/"
+        else:
+            path = prev_path
         return show_directory(remote_cfg, remote, remote_type, path)
-    return serve_file(remote_cfg, remote, remote_type, path)
+    else:
+        if is_directory(remote_cfg, remote, remote_type, path):
+            return show_directory(remote_cfg, remote, remote_type, path)
+        return serve_file(remote_cfg, remote, remote_type, path)
