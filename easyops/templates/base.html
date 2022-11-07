@@ -18,6 +18,7 @@
     <script type="text/javascript" src="{{ url_for("static", filename="js/lib/fileinput.min.js") }}"></script>
     <script type="text/javascript" src="{{ url_for("static", filename="js/easyops.js") }}"></script>
     <script type="text/javascript" src="{{ url_for("static", filename="js/sidebar_button.js") }}"></script>
+    <script type="text/javascript" src="http://pv.sohu.com/cityjson?ie=utf-8"></script>
   </head>
   <body>
 	{% block lgmenu %}
@@ -25,5 +26,8 @@
 	{% block navpage %}
     {% block content %}{% endblock %}
 	{% endblock %}
+  <div class="tips-container">
+    <span id="tips"></span>
+  </div>
   </body>
 </html>

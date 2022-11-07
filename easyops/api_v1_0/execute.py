@@ -61,7 +61,7 @@ def execute_host_details():
         host = execute_info["host"]
         if not utils.check_ip(host):
             flash("Ipaddress is invalid.")
-            return render_template("execute/host.html")
+            return "<h1 style='color:red;'>Checked [{0}] ipaddress is invalid</h1>".format(host)
         if host:
             runner.run(hosts=host, module=module, args=command)
             exec_rets = runner.get_result(host)

@@ -82,6 +82,19 @@ a.resources_menu a.remote_execute{
   margin-top: 27px;
 }
 
+.navbar-login-info {
+  display: inline-flex;
+  font-size: 10px;
+  position: relative;
+  margin-right: 20px;
+  height: 76px;
+  line-height: 20px;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  margin-left: 10px;
+}
+
 .rightcontent {
   display: block;
   position: relative;
@@ -116,38 +129,59 @@ a.resources_menu a.remote_execute{
 	white-space: none; 
 }
 
-
-.wy-lg-form {
-  position: absolute;
-  display: block;
-  border-radius: 5px;
-  background-color: #f2f2f2;
-  box-shadow: 10px 10px 10px #888888;
-  padding: 20px 30px 35px;
-  width: 500px;
-  height: 400px;
-  margin-left: -250px;
-  margin-top: -200px;
-  top: 50%;
+.tips-container {
+  display: none;
+  position: fixed;
+  top: 150px;
   left: 50%;
+  margin: -100px 0 0 -100px;
+  border: 1px solid #f9dedf;
+  background-color: #FEF1F0;
+  padding: 10px;
+  border-radius: 5px;
+  color: #f7676e;
 }
 
-.wy-rg-form {
-  position: absolute;
-  display: block;
-  border-radius: 5px;
+.login-container {
+  position: relative;
   background-color: #f2f2f2;
-  box-shadow: 10px 10px 10px #888888;
-  padding: 20px 30px 35px;
-  width: 500px;
+  top: 100px;
+  width: 800px;
   height: 500px;
-  margin-left: -250px;
-  margin-top: -250px;
-  top: 50%;
-  left: 50%;
+  margin: 0 auto;
 }
 
-input[type=text], textarea, select {
+.wy-lg-picture {
+  position: relative;
+  width: 50%;
+  height: 100%;
+  background-color: rgb(158, 146, 127);
+  float: left;
+}
+
+.wy-lg-picture img {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.wy-lg-form, .wy-rg-form {
+  position: relative;
+  background-color: #f2f2f2;
+  width: 50%;
+  height: 100%;
+  float: right;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.wy-lg-form>form, .wy-rg-form>form {
+  margin: 30px;
+  line-height: 30px;
+}
+
+textarea, select {
   font-family: monospace;
   border-radius: 4px;
   border: 1px solid #ccc;
@@ -158,14 +192,27 @@ input[type=text], textarea, select {
   display: inline-block;
 }
 
-input[type=password] {
-  border-radius: 4px;
-  border: 1px solid #ccc;
+input[type=text], input[type=password] {
+  font-family: monospace;
   box-sizing: border-box;
   width: 100%;
-  padding: 12px 20px;
-  margin: 12px 0;
   display: inline-block;
+  border: none;
+  outline: none;
+  border-bottom: 1px solid #d9d9d9;
+  background-color: #f2f2f2;
+  height: 40px;
+  padding-left: 10px;
+  margin-bottom: 25px;
+}
+
+input[type=text]:hover, input[type=password]:hover {
+  border-bottom: 1px solid #cc2f2e;
+}
+
+input[type=text]:focus, input[type=password]:focus {
+  border: 1px solid none;
+  box-shadow: 0px 0px 5px rgb(242, 78, 78);
 }
 
 input.danger {
@@ -177,14 +224,12 @@ input[type=submit] {
   border: none;
   box-sizing: border-box;
   width: 100%;
-  padding: 12px 20px;
-  margin: 20px 0;
-  display: inline-block;
-  border-radius: 4px;
+  padding: 10px;
+  color: white;
 }
 
 input[type=submit]:hover {
-	background-color: #2980b9;
+	background-color: #e9777c;
 }
 
 h1 {
@@ -359,7 +404,7 @@ li {
   background-color: green;
   color: white;
   text-align: center;
-  font-size: 1px;
+  font-size: 12px;
 }
 
 .step03_content {

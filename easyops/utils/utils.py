@@ -95,7 +95,7 @@ def get_host_details(ip, exec_rets):
     memory_freemb = ansible_facts.get('ansible_memfree_mb')
 
     # Get interfaces info from ansible facts.
-    interface_list = [ x for x in ansible_facts.get("ansible_interfaces") if x.startswith("ens") or x.startswith("eth") ]
+    interface_list = [ x for x in ansible_facts.get("ansible_interfaces") if x.startswith("ens") or x.startswith("eth") or x.startswith("eno") ]
     for net in interface_list:
         interfaces[net] = {}
         interface_obj_name = "ansible_" + net

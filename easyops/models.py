@@ -13,6 +13,7 @@
 from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
 from easyops import db
+from sqlalchemy.orm import backref
 
 class BaseModel(object):
     create_time = db.Column(db.DateTime, default=datetime.now)
@@ -24,6 +25,8 @@ class Users(BaseModel, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(32), unique=True, nullable=False)
     password_hash = db.Column(db.String(120), nullable=False)
+    register_time = db.Column(db.DateTime, default=datetime.now)
+    is_login = db.Column(db.Boolean, default=False)
 
     @property
     def password(self):
@@ -73,3 +76,12 @@ class Storages(BaseModel, db.Model):
     upload_cutoff = db.Column(db.String(100))
     chunk_size = db.Column(db.String(100))
     upload_checksum = db.Column(db.Boolean, default=False)
+
+class UsersLoginHistory(BaseModel,db.Model):
+    __tablename__ = "users_login_history"
+    id = db.Column(db.Integer, primary_key=True, comment="主键")
+    user_id = db.Column(db.ForeignKey("users.id"), comment="用户id")
+    login_time = db.Column(db.DateTime, default=datetime.now, comment="上次登录时间")
+    login_ipaddress = db.Column(db.String(30), comment="登录ip")
+    login_region = db.Column(db.String(30), comment="登录地址")
+    user = db.relationship("Users", uselist=False, backref=backref("users_login_history", uselist=True))

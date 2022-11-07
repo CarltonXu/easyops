@@ -14,7 +14,7 @@ import redis
 
 class Config(object):
     SECRET_KEY = "XHS0I*Y9dfs9cshd9"
-    SQLALCHEMY_DATABASE_URI = "mysql://easyops:easyopsPass@192.168.10.68:3306/easyops"
+    SQLALCHEMY_DATABASE_URI = "mysql://easyops:easyopsPass@localhost:3306/easyops"
     SQLALCHEMY_TRACK_MODIFICATIONS = True
 
     # This is a sqlite3 db configure section
@@ -23,7 +23,7 @@ class Config(object):
     REDIS_PORT = 6379
 
     SESSION_TYPE = "redis"
-    SESSION_REDIS = redis.StrictRedis(host=REDIS_HOST, port=REDIS_PORT)
+    #SESSION_REDIS = redis.StrictRedis(host=REDIS_HOST, port=REDIS_PORT)
     SESSION_USER_SIGNER = True
     PERMANENT_SESSION_LIFETIME = 86400
 

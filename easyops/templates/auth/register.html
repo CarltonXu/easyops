@@ -1,16 +1,31 @@
-{% extends "base.html" %}
-{% include "auth/auth_base.html" %}
-{% block content %}
+{% extends "base.html" %} {% include "auth/auth_base.html" %} {% block content %}
+<div class="login-container">
+  <div class="wy-lg-picture">
+    <img src="https://img95.699pic.com/photo/40110/2065.gif_wh860.gif" alt="" />
+  </div>
   <div class="wy-rg-form">
-    <h1>{% block title %}Register{% endblock %}</h1>
+    <h1>{% block title %}注册{% endblock %}</h1>
     <form method="post">
-      <label for="username">Username</label>
-      <input type="text" name="username" id="username" required>
-      <label type="password" for="password">Password</label>
-      <input type="password" name="password" id="password" onkeyup="checkpassword()" required>
-      <label type="password" for="password">Confirm password</label>
-	    <input type="password" name="repassword" id="repassword" onkeyup="checkpassword()" required><span id="tips"></span>
-      <input type="submit" value="Register" id="bt_input"">
+      <label for="username">用户名</label>
+      <input type="text" name="username" id="username" placeholder="请输入用户名" required />
+      <label type="password" for="password">密码</label>
+      <input
+        type="password"
+        name="password"
+        id="password"
+        placeholder="请输入密码"
+        onkeyup="checkpassword()"
+        required />
+      <label type="password" for="password">确认密码</label>
+      <input
+        type="password"
+        name="repassword"
+        id="repassword"
+        placeholder="请再次输入密码"
+        onkeyup="checkpassword()"
+        required /><span id="tips"></span>
+      <input type="submit" value="提交注册" id="bt_input" />
     </form>
   </div>
+</div>
 {% endblock %}

@@ -1,18 +1,22 @@
-{% extends "base.html" %}
-{% include "auth/auth_base.html" %}
-{% block content %}
-<div class="wy-lg-form">
-  <h1>{% block title %}Login{% endblock %}</h1>
-  <form method="post" action="/api/v1.0/login" role="form">
-    <span for="username">Username</span>
-    <input id="username" type="text" name="username" placeholder="请输入用户名"/>
-    <span for="password">Password</span>
-    <input id="password" type="password" name="password" placeholder="请输入密码"/>
-    {% for msg in get_flashed_messages() %}
-    <span style="float: right; color: red;">{{msg}}</span>
-    {% endfor %}
-    <span id="tips" style="float: right; color: red;"></span>
-    <input id="login_btn" type="submit" value="Login">
-  </form>
+{% extends "base.html" %} {% include "auth/auth_base.html" %} {% block content %}
+<div class="login-container">
+  <div class="wy-lg-picture">
+    <img src="../../static/img/background.gif" alt="" />
+  </div>
+  <div class="wy-lg-form">
+    <h1>{% block title %}登录{% endblock %}</h1>
+    <form method="post" action="/api/v1.0/login" role="form">
+      <span for="username">用户名</span>
+      <input id="username" type="text" name="username" placeholder="请输入用户名" />
+      <span for="password">密码</span>
+      <input id="password" type="password" name="password" placeholder="请输入密码" />
+      <input id="login_ipaddress" type="text" name="login_ipaddress" style="display: none" />
+      <input id="login_region" type="text" name="login_region" style="display: none" />
+      {% for msg in get_flashed_messages() %}
+      <span style="float: right; color: red">{{msg}}</span>
+      {% endfor %}
+      <input id="login_btn" type="submit" value="登录" />
+    </form>
+  </div>
 </div>
 {% endblock %}

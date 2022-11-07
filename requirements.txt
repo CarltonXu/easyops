@@ -1,5 +1,5 @@
 humanfriendly==10.0
-request==1.0.117
+request==2.27.1
 sarge==0.1.6
 flask==0.12.5
 Jinja2==3.0.1

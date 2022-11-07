@@ -1,30 +1,30 @@
 {% if path_links %}
   <div style="display: flex;">
     <div style="display: flex">
-      <button class="btn btn-light prev_btn" type="button" style="background: none;border:none;margin-right: .25rem!important;">
+      <button id="prev_path_btn" class="btn btn-light prev_btn" type="button" style="background: none;border:none;margin-right: .25rem!important;">
         <i class="fa fa-lg fa-arrow-left"></i>
       </button>
-      <button class="btn btn-light next_btn" type="button" style="background: none;border:none;margin-right: .25rem!important;">
+      <button id="next_path_btn" class="btn btn-light next_btn" type="button" style="background: none;border:none;margin-right: .25rem!important;">
         <i class="fa fa-lg fa-arrow-right"></i>
       </button>
-      <button class="btn btn-light refresh_btn" type="button" style="background: none;border:none;margin-right: .25rem!important;">
+      <button id="refresh_path_btn" class="btn btn-light refresh_btn" type="button" style="background: none;border:none;margin-right: .25rem!important;">
         <i class="fa fa-lg fa-refresh"></i>
       </button>
     </div>
     <!-- <div style="display: flex;margin-left: 20px; width: 90%;"> -->
-      <form role="form" method="POST" action="" style="display:flex;width:76%;margin-left: 20px;margin-right: 20px;">
+      <form role="form" method="POST" onsubmit="return false" action="#" style="display:flex;width:76%;margin-left: 20px;margin-right: 20px;">
         <div class="input-group" style="width:100%">
           <span class="input-group-btn">
-            <button type="button" value="{{ remote + '/'}}" class="btn btn-default" style="padding-right:2px;border-right:none;outline: none;cursor: text;">{{ remote + ': /'}}</button>
+            <button id="remote-storage-name" type="button" value="{{ remote + '/'}}" class="btn btn-default" style="padding-right:2px;border-right:none;outline: none;cursor: text;">{{ remote + ': /'}}</button>
           </span>
           {% if path_links[-1][1] == '/' %}
-            <input class="form-control" type="text" value="{{ path_links[0][0] }}" style="padding-left:1px;margin-top:7px;border-left:none;">
+            <input id="remote-storage-path" class="form-control" type="text" value="{{ path_links[0][0] }}" style="padding-left:1px;margin-top:7px;border-left:none;">
           {% else %}
-            <input class="form-control" type="text" value="{{ path_links[-1][1] }}" style="padding-left:1px;margin-top:7px;border-left:none;">
+            <input id="remote-storage-path" class="form-control" type="text" value="{{ path_links[-1][1] }}" style="padding-left:1px;margin-top:7px;border-left:none;">
           {% endif %}
         </div>
         <div style="z-index: 2;">
-          <button class="btn btn-link" style="text-decoration: none;margin-left: -35px;margin-top: 7px;">
+          <button id="submit-storage-path_btn" class="btn btn-link" style="text-decoration: none;margin-left: -35px;margin-top: 7px;">
             <i class="fa fa-arrow-right"></i>
           </button>
         </div>
@@ -62,7 +62,7 @@
                 <a href="#" value="{{ url_for('api_v1_0.remote_home', remote=remote, path=path_links[0][0] + file['name'].split('/')[0]) }}">{{ file['name'] }}</a>
               {% else %}
                 <i class="glyphicon glyphicon-file"></i>
-                <a href="{{ url_for('api_v1_0.remote_home', remote=remote, path=path_links[0][0] + file['name'].split('/')[0]) }}" value="" download="{{ file['name'] }}">{{ file['name'] }}</a>
+                <a href="{{ url_for('api_v1_0.remote_home', remote=remote, path=path_links[0][0] + file['name'].split('/')[0]) }}" value="{{ url_for('api_v1_0.remote_home', remote=remote, path=path_links[0][0] + file['name'].split('/')[0]) }}" download="{{ file['name'] }}">{{ file['name'] }}</a>
               {% endif %}
             {% else %}
               {% if file["is_dir"] %}
@@ -70,7 +70,7 @@
                 <a href="#" value="{{ url_for('api_v1_0.remote_home', remote=remote, path=path_links[-1][1] + '/' + file['name'].split('/')[0]) }}">{{ file['name'] }}</a>
               {% else %}
                 <i class="glyphicon glyphicon-file"></i>
-                <a href="{{ url_for('api_v1_0.remote_home', remote=remote, path=path_links[-1][1] + '/' + file['name'].split('/')[0]) }}" value="" download="{{ file['name'] }}">{{ file['name'] }}</a>
+                <a href="{{ url_for('api_v1_0.remote_home', remote=remote, path=path_links[-1][1] + '/' + file['name'].split('/')[0]) }}" value="{{ url_for('api_v1_0.remote_home', remote=remote, path=path_links[0][0] + file['name'].split('/')[0]) }}" download="{{ file['name'] }}">{{ file['name'] }}</a>
               {% endif %}
             {% endif %}
           </td>
@@ -88,7 +88,7 @@
                 <i class="glyphicon glyphicon-trash" style="color: rgb(223, 0, 0);"></i>
               </a>
               {% if not file["is_dir"] %}
-                <a href="{{ url_for('api_v1_0.remote_home', remote=remote, path=path_links[0][0] + file['name'].split('/')[0]) }}" download="{{ file['name'] }}">
+                <a href="{{ url_for('api_v1_0.remote_home', remote=remote, path=path_links[0][0] + file['name'].split('/')[0]) }}" value="{{ url_for('api_v1_0.remote_home', remote=remote, path=path_links[-1][1] + '/' + file['name'].split('/')[0]) }}" download="{{ file['name'] }}">
                   <i class="glyphicon glyphicon-cloud-download"></i>
                 </a>
               {% endif %}
@@ -97,7 +97,7 @@
                 <i class="glyphicon glyphicon-trash" style="color: rgb(223, 0, 0);"></i>
               </a>
               {% if not file["is_dir"] %}
-                <a href="{{ url_for('api_v1_0.remote_home', remote=remote, path=path_links[0][0] + file['name'].split('/')[0]) }}" download="{{ file['name'] }}">
+                <a href="{{ url_for('api_v1_0.remote_home', remote=remote, path=path_links[-1][1] + '/' + file['name'].split('/')[0]) }}" value="{{ url_for('api_v1_0.remote_home', remote=remote, path=path_links[-1][1] + '/' + file['name'].split('/')[0]) }}" download="{{ file['name'] }}">
                   <i class="glyphicon glyphicon-cloud-download"></i>
                 </a>
               {% endif %}
