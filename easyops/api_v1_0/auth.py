@@ -25,8 +25,9 @@ def login():
         password = request.form["password"]
         login_ipaddress = request.form["login_ipaddress"]
         login_region = request.form["login_region"]
-        verify_code_string = request.form["verify_code"]
+        verify_code_string = request.form["verify_code"].lower()
         resp_user_info = check_user_exsits(username)
+        remember_me = request.form.get("remember")
         if resp_user_info["response_code"] == 1001:
             resp = check_user_password(username, password)
             if resp["response_code"] == 1002:
@@ -34,23 +35,42 @@ def login():
                 if resp_verify_code["response_code"] == 1006:
                     if session.get("user_id") is not None:
                         session.clear()
+                        if remember_me:
+                            session.permanent = True
                         session["user_id"] = resp_user_info["user_id"]
                         user_login_history = get_user_last_login_history(username)
                         if user_login_history["response_code"] == 1005:
                             last_login_history = user_login_history.get("user_history")
 
-                        return render_template("index.html", last_login_history=last_login_history)
+                        resp = make_response(render_template("index.html", last_login_history=last_login_history))
+                        if remember_me:
+                            resp.set_cookie("username", username, max_age=1296000)
+                            resp.set_cookie("password", password, max_age=1296000)
+                        else:
+                            resp.delete_cookie("username")
+                            resp.delete_cookie("password")
+                        return resp
                     else:
                         login_time = datetime.datetime.now()
                         resp = set_user_login_history(username, login_time, login_ipaddress, login_region)
                         if resp.get("response_code") == 1004:
                             session.clear()
+                            if remember_me:
+                                session.permanent = True
                             session["user_id"] = resp_user_info["user_id"]
                             user_login_history = get_user_last_login_history(username)
                             if user_login_history["response_code"] == 1005:
                                 last_login_history = user_login_history.get("user_history")
 
-                            return render_template("index.html", last_login_history=last_login_history)
+                            resp = make_response(render_template("index.html", last_login_history=last_login_history))
+                            if remember_me:
+                                resp.set_cookie("username", username, max_age=1296000)
+                                resp.set_cookie("password", password, max_age=1296000)
+                            else:
+                                resp.delete_cookie("username")
+                                resp.delete_cookie("password")
+                            return resp
+                        
                 else:
                     flash(resp_verify_code["errormsg"])
             else:
@@ -64,7 +84,7 @@ def login():
             last_login_history = user_login_history.get("user_history")
         else:
             flash(user_login_history["errormsg"])
-        return render_template("index.html", last_login_history=last_login_history)
+        return render_template("index.html", last_login_history=last_login_history), 202
     else:
         return render_template("auth/login.html")
 
@@ -183,12 +203,16 @@ def login_required(view):
 
 def verify_login_code(session, verify_code_string):
     errormsg = None
-    if session.get('image').lower() != verify_code_string:
-        errormsg = "验证码失败"
-        res_code = 4001
+    if session.get("image") is not None:
+        if session.get('image').lower() != verify_code_string:
+            errormsg = "验证码失败"
+            res_code = 4001
+        else:
+            errormsg = "验证成功"
+            res_code = 1006
     else:
-        errormsg = "验证成功"
-        res_code = 1006
+        errormsg = "获取验证码错误"
+        res_code = 4002
 
     return {
         "response_code": res_code,

@@ -1,104 +1,98 @@
-{% extends "base.html" %}
-{% block title %}
-  自动化运维管理平台
-{% endblock %}
-{% block navpage %}
+{% extends "base.html" %} {% block title %} 自动化运维管理平台 {% endblock %} {% block navpage %}
 <div class="overall-container">
   <div class="sidebar-container">
-	<div class="sidebar-logo-container">
-	  <img class="sidebar-logo" src="{{ url_for('static', filename='img/easyops-logo.png') }}">
-	</div>
-	<div class="el-scrollbar" >
-	  <ul style="background-color: transparent;list-style-type:none;padding: 0px;">
-		<div class="menu-wrapper" id="overview">
-	      <a href="#">
-		    <li class="menu-li">
-			  <span  class="glyphicon glyphicon-home menu-icon"></span>
-			  <span>概览</span>
-		    </li>
-		  </a>
-		</div>
-		<div class="menu-wrapper" id="host">
-	      <a href="#">
-		    <li class="menu-li">
-			  <span  class="glyphicon glyphicon-tasks menu-icon"></span>
-			  <span>主机管理</span>
-		    </li>
-		  </a>
-		</div>
-		<div class="menu-wrapper" id="storage">
-	      <a href="#">
-		    <li class="menu-li">
-			  <span class="glyphicon glyphicon-hdd menu-icon"></span>
-			  <span>存储管理</span>
-		    </li>
-		  </a>
-		</div>
-		<div id="resources_menu" class="menu-wrapper master-menu">
-		  <li class="menu-li">
-			<span class="glyphicon glyphicon-wrench menu-icon"></span>
-			<span>资源操作</span>
-			<span class="btn-more">
-			  <i class="fa fa-angle-up hidden"></i>
-			  <i class="fa fa-angle-down"></i>
-			</span>
-		  </li>
-		</div>
-		<div id="remote_execute" class="menu-wrapper child-menu">
-		  <a href="#">
-			<li class="menu-li menu-child-li">
-			  <span class="iconfont icon-terminal menu-icon"></span>
-			  <span>远程执行</span>
-		    </li>
-		  </a>
-		</div>  
-		<div id="data_sync" class="menu-wrapper child-menu">
-		  <a href="#">
-			<li class="menu-li menu-child-li">
-			  <span class="glyphicon glyphicon-transfer menu-icon"></span>
-			  <span>数据同步</span>
-		    </li>
-		  </a>
-		</div>  
-		<div class="menu-wrapper" id="user">
-	      <a href="#">
-		    <li class="menu-li">
-			  <span class="glyphicon glyphicon-user menu-icon"></span>
-			  <span>用户管理</span>
-		    </li>
-		  </a>
-		</div>
-	  </ul>
-	</div>
+    <div class="sidebar-logo-container">
+      <img class="sidebar-logo" src="{{ url_for('static', filename='img/easyops-logo.png') }}" />
+    </div>
+    <div class="el-scrollbar">
+      <ul style="background-color: transparent; list-style-type: none; padding: 0px">
+        <div class="menu-wrapper" id="overview">
+          <a href="#">
+            <li class="menu-li">
+              <span class="glyphicon glyphicon-home menu-icon"></span>
+              <span>概览</span>
+            </li>
+          </a>
+        </div>
+        <div class="menu-wrapper" id="host">
+          <a href="#">
+            <li class="menu-li">
+              <span class="glyphicon glyphicon-tasks menu-icon"></span>
+              <span>主机管理</span>
+            </li>
+          </a>
+        </div>
+        <div class="menu-wrapper" id="storage">
+          <a href="#">
+            <li class="menu-li">
+              <span class="glyphicon glyphicon-hdd menu-icon"></span>
+              <span>存储管理</span>
+            </li>
+          </a>
+        </div>
+        <div id="resources_menu" class="menu-wrapper master-menu">
+          <li class="menu-li">
+            <span class="glyphicon glyphicon-wrench menu-icon"></span>
+            <span>资源操作</span>
+            <span class="btn-more">
+              <i class="fa fa-angle-up hidden"></i>
+              <i class="fa fa-angle-down"></i>
+            </span>
+          </li>
+        </div>
+        <div id="remote_execute" class="menu-wrapper child-menu">
+          <a href="#">
+            <li class="menu-li menu-child-li">
+              <span class="iconfont icon-terminal menu-icon"></span>
+              <span>远程执行</span>
+            </li>
+          </a>
+        </div>
+        <div id="data_sync" class="menu-wrapper child-menu">
+          <a href="#">
+            <li class="menu-li menu-child-li">
+              <span class="glyphicon glyphicon-transfer menu-icon"></span>
+              <span>数据同步</span>
+            </li>
+          </a>
+        </div>
+        <div class="menu-wrapper" id="user">
+          <a href="#">
+            <li class="menu-li">
+              <span class="glyphicon glyphicon-user menu-icon"></span>
+              <span>用户管理</span>
+            </li>
+          </a>
+        </div>
+      </ul>
+    </div>
   </div>
   <div class="main-container">
     <div class="navbar-top">
-	  <div class="navbar-login-info" style="display: inline-flex;font-size:10px;">
-		<div class="login-info-item">
-		  <span>上次登录时间: {{ last_login_history["last_login_time"] }}</span>
-		</div>
-		<div class="login-info-item">
-		  <span>上次登录IP: {{ last_login_history["last_login_ipaddress"] }}</span>
-		</div>
-		<div class="login-info-item">
-		<span>上次登录地址: {{ last_login_history["last_login_region"] }}</span>
-		</div>
-	  </div>
-	  <div class="navbar-right-menu">
-		 <div class="navbar-user-col">
-		   {% if g.user %}
-		     <span class="glyphicon glyphicon-user"></span> {{ g.user["username"] }}
-		     <span class="glyphicon glyphicon-log-out"></span> <a href="{{ url_for("api_v1_0.logout") }}">LogOut</a>
-		   {% else %}
-		     <a href="{{ url_for('api_v1_0.register') }}">Register</a>
-		     <span class="glyphicon glyphicon-log-out"></span> <a href="{{ url_for("api_v1_0.login") }}">LogIn</a>
-		   {% endif %}
-		 </div>
-	  </div>
+      <div class="navbar-login-info" style="display: inline-flex; font-size: 10px">
+        <div class="login-info-item">
+          <span>上次登录时间: {{ last_login_history["last_login_time"] }}</span>
+        </div>
+        <div class="login-info-item">
+          <span>上次登录IP: {{ last_login_history["last_login_ipaddress"] }}</span>
+        </div>
+        <div class="login-info-item">
+          <span>上次登录地址: {{ last_login_history["last_login_region"] }}</span>
+        </div>
+      </div>
+      <div class="navbar-right-menu">
+        <div class="navbar-user-col">
+          {% if g.user %}
+          <span class="glyphicon glyphicon-user"></span> {{ g.user["username"] }}
+          <span class="glyphicon glyphicon-log-out"></span> <a href="{{ url_for('api_v1_0.logout') }}">LogOut</a>
+          {% else %}
+          <a href="{{ url_for('api_v1_0.register') }}">Register</a>
+          <span class="glyphicon glyphicon-log-out"></span> <a href="{{ url_for('api_v1_0.login') }}">LogIn</a>
+          {% endif %}
+        </div>
+      </div>
     </div>
-	<div class="container-fluid rightcontent" id="context">
-	    {% include "overview/overview.html" %}
-	</div>
+    <div class="container-fluid rightcontent" id="context">{% include "overview/overview.html" %}</div>
   </div>
 </div>
 <div class="overall-mask"></div>

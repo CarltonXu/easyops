@@ -17,3 +17,4 @@ paramiko==2.7.0
 cryptography==2.5
 redis==3.5.3
 mysqlclient==2.0.3
+Pillow==9.2.0
