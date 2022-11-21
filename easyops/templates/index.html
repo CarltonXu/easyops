@@ -75,13 +75,13 @@
     <div class="navbar-top">
 	  <div class="navbar-login-info" style="display: inline-flex;font-size:10px;">
 		<div class="login-info-item">
-		  <span>上次登录时间: {{ last_login_time }}</span>
+		  <span>上次登录时间: {{ last_login_history["last_login_time"] }}</span>
 		</div>
 		<div class="login-info-item">
-		  <span>上次登录IP: {{ last_login_ipaddress }}</span>
+		  <span>上次登录IP: {{ last_login_history["last_login_ipaddress"] }}</span>
 		</div>
 		<div class="login-info-item">
-		<span>上次登录地址: {{ last_login_region }}</span>
+		<span>上次登录地址: {{ last_login_history["last_login_region"] }}</span>
 		</div>
 	  </div>
 	  <div class="navbar-right-menu">

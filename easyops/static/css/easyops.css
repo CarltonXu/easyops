@@ -122,7 +122,7 @@ a.resources_menu a.remote_execute{
   color: white;
   background-color: black;
   width: 819px;
-  height: 50px;
+  height: 55px;
   padding: 15px;
   border-radius: 3px;
   resize: none;
@@ -144,19 +144,24 @@ a.resources_menu a.remote_execute{
 
 .login-container {
   position: relative;
-  background-color: #f2f2f2;
+  background-color: #fcfbfd;
   top: 100px;
-  width: 800px;
+  width: 980px;
   height: 500px;
   margin: 0 auto;
+  box-shadow: 0px 0px 200px 0px #ddc8ed;
 }
 
 .wy-lg-picture {
   position: relative;
-  width: 50%;
+  width: 53%;
   height: 100%;
   background-color: rgb(158, 146, 127);
   float: left;
+}
+
+.wy-lg-picture:hover, .wy-rg-picture:hover, .wy-rst-picture:hover {
+  box-shadow: 0px 16px 32px 0px rgb(48 55 66 / 15%);
 }
 
 .wy-lg-picture img {
@@ -165,10 +170,10 @@ a.resources_menu a.remote_execute{
   height: 100%;
 }
 
-.wy-lg-form, .wy-rg-form {
+.wy-lg-form, .wy-rg-form, .wy-rst-form {
   position: relative;
-  background-color: #f2f2f2;
-  width: 50%;
+  background-color: #fff;
+  width: 47%;
   height: 100%;
   float: right;
   display: flex;
@@ -176,9 +181,12 @@ a.resources_menu a.remote_execute{
   justify-content: center;
 }
 
-.wy-lg-form>form, .wy-rg-form>form {
+.wy-lg-form:hover, .wy-rg-form:hover, .wy-rst-form:hover {
+  box-shadow: 0px 16px 32px 0px rgb(48 55 66 / 15%);
+}
+
+.wy-lg-form>form, .wy-rg-form>form, .wy-rst-form>form {
   margin: 30px;
-  line-height: 30px;
 }
 
 textarea, select {
@@ -200,7 +208,7 @@ input[type=text], input[type=password] {
   border: none;
   outline: none;
   border-bottom: 1px solid #d9d9d9;
-  background-color: #f2f2f2;
+  background-color: #fff;
   height: 40px;
   padding-left: 10px;
   margin-bottom: 25px;
@@ -356,7 +364,7 @@ li {
   border-radius: 4px;
   font-size: 13px;
   padding: 20px;
-  width: 28%;
+  width: 35%;
   height: 80%;
   right: 0;
   overflow: auto;
@@ -445,4 +453,31 @@ li {
   display: inline-block;
   margin-top: 6px;
   margin-left: 190px;
+}
+
+#prev_path_btn, #next_path_btn, #refresh_path_btn {
+  background: none;
+  border: none;
+  margin-right: 0.25rem !important;
+}
+
+#submit-storage-path_btn {
+  text-decoration: none;
+  margin-left: -35px;
+  margin-top: 7px;
+}
+
+#remote-storage-path {
+  height: 34px;
+  padding-left: 0px;
+  margin-top: 7px;
+  border: 1px solid #ccc;
+  border-left: none;
+}
+
+#remote-storage-name {
+  padding-right: 2px;
+  border-right: none;
+  outline: none;
+  cursor: text;
 }

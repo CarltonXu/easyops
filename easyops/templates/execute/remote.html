@@ -5,7 +5,7 @@
   <div class="col-md-5 cmd-container">
     <form id="command_form">
       <label>命令</label>
-      <input id="exec_cmd" name="cmd" type="text" placeholder="命令" value="{{ ex_cmd }}" required>
+      <input style="border: 1px solid #d9d9d9" id="exec_cmd" name="cmd" type="text" placeholder="命令" value="{{ ex_cmd }}" required>
       <label>远程主机</label></br>
       <select id="remote_hosts">
         {% for host in remote_hosts %}

@@ -1,117 +1,142 @@
 {% if path_links %}
-  <div style="display: flex;">
-    <div style="display: flex">
-      <button id="prev_path_btn" class="btn btn-light prev_btn" type="button" style="background: none;border:none;margin-right: .25rem!important;">
-        <i class="fa fa-lg fa-arrow-left"></i>
-      </button>
-      <button id="next_path_btn" class="btn btn-light next_btn" type="button" style="background: none;border:none;margin-right: .25rem!important;">
-        <i class="fa fa-lg fa-arrow-right"></i>
-      </button>
-      <button id="refresh_path_btn" class="btn btn-light refresh_btn" type="button" style="background: none;border:none;margin-right: .25rem!important;">
-        <i class="fa fa-lg fa-refresh"></i>
-      </button>
-    </div>
-    <!-- <div style="display: flex;margin-left: 20px; width: 90%;"> -->
-      <form role="form" method="POST" onsubmit="return false" action="#" style="display:flex;width:76%;margin-left: 20px;margin-right: 20px;">
-        <div class="input-group" style="width:100%">
-          <span class="input-group-btn">
-            <button id="remote-storage-name" type="button" value="{{ remote + '/'}}" class="btn btn-default" style="padding-right:2px;border-right:none;outline: none;cursor: text;">{{ remote + ': /'}}</button>
-          </span>
-          {% if path_links[-1][1] == '/' %}
-            <input id="remote-storage-path" class="form-control" type="text" value="{{ path_links[0][0] }}" style="padding-left:1px;margin-top:7px;border-left:none;">
-          {% else %}
-            <input id="remote-storage-path" class="form-control" type="text" value="{{ path_links[-1][1] }}" style="padding-left:1px;margin-top:7px;border-left:none;">
-          {% endif %}
-        </div>
-        <div style="z-index: 2;">
-          <button id="submit-storage-path_btn" class="btn btn-link" style="text-decoration: none;margin-left: -35px;margin-top: 7px;">
-            <i class="fa fa-arrow-right"></i>
-          </button>
-        </div>
-      </form>
-    <!-- </div> -->
-    <div style="display: flex;">
-      <button class="btn btn-light" type="button" style="background: none; border:none">
-        <img class="fa fa-lg" src="{{ url_for('static', filename='img/add-folder.png') }}" alt="New Folder">
-      </button>
-    </div>
+<div style="display: flex">
+  <div style="display: flex">
+    <button id="prev_path_btn" class="btn btn-light prev_btn" type="button">
+      <i class="fa fa-lg fa-arrow-left"></i>
+    </button>
+    <button id="next_path_btn" class="btn btn-light next_btn" type="button">
+      <i class="fa fa-lg fa-arrow-right"></i>
+    </button>
+    <button id="refresh_path_btn" class="btn btn-light refresh_btn" type="button">
+      <i class="fa fa-lg fa-refresh"></i>
+    </button>
   </div>
-  <div style="height: 95%;overflow-y: auto;">
-    <form method="POST" action="" target="_blank">
-      <table class="table table-striped">
-        <thead>
-          <tr>
-            <th style="text-align: left;">
-              <input type="checkbox" name="select_all_file" value="">
-            </th>
-            <th style="text-align: left;">Name</th>
-            <th style="text-align: left;">Size</th>
-            <th style="text-align: left;">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
+  <div style="display: flex; margin-left: 20px; width: 90%">
+    <form
+      role="form"
+      method="POST"
+      onsubmit="return false"
+      action="#"
+      style="display: flex; width: 76%; margin-left: 20px; margin-right: 20px">
+      <div class="input-group" style="width: 100%">
+        <span class="input-group-btn">
+          <button id="remote-storage-name" type="button" value="{{ remote + '/'}}" class="btn btn-default">
+            {{ remote + ': /'}}
+          </button>
+        </span>
+        {% if path_links[-1][1] == '/' %}
+        <input id="remote-storage-path" class="form-control" type="text" value="{{ path_links[0][0] }}" />
+        {% else %}
+        <input id="remote-storage-path" class="form-control" type="text" value="{{ path_links[-1][1] }}" />
+        {% endif %}
+      </div>
+      <div style="z-index: 2">
+        <button id="submit-storage-path_btn" class="btn btn-link">
+          <i class="fa fa-arrow-right"></i>
+        </button>
+      </div>
+    </form>
+  </div>
+  <div style="display: flex">
+    <button class="btn btn-light" type="button" style="background: none; border: none">
+      <img class="fa fa-lg" src="{{ url_for('static', filename='img/add-folder.png') }}" alt="New Folder" />
+    </button>
+  </div>
+</div>
+<div style="height: 95%; overflow-y: auto">
+  <form method="POST" action="" target="_blank">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th style="text-align: left">
+            <input type="checkbox" name="select_all_file" value="" />
+          </th>
+          <th style="text-align: left">Name</th>
+          <th style="text-align: left">Size</th>
+          <th style="text-align: left">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
         {% for file in file_list %}
         <tr>
-          <td style="text-align: left;">
-            <input type="checkbox" name="filename" value="{{ request.path }}{{ file['name'] }}">
+          <td style="text-align: left">
+            <input type="checkbox" name="filename" value="{{ request.path }}{{ file['name'] }}" />
           </td>
-          <td style="text-align: left;">
-            {% if path_links[-1][1] == "/" %}
-              {% if file["is_dir"] %}
-                <i class="glyphicon glyphicon-folder-close"></i>
-                <a href="#" value="{{ url_for('api_v1_0.remote_home', remote=remote, path=path_links[0][0] + file['name'].split('/')[0]) }}">{{ file['name'] }}</a>
-              {% else %}
-                <i class="glyphicon glyphicon-file"></i>
-                <a href="{{ url_for('api_v1_0.remote_home', remote=remote, path=path_links[0][0] + file['name'].split('/')[0]) }}" value="{{ url_for('api_v1_0.remote_home', remote=remote, path=path_links[0][0] + file['name'].split('/')[0]) }}" download="{{ file['name'] }}">{{ file['name'] }}</a>
-              {% endif %}
+          <td style="text-align: left">
+            {% if path_links[-1][1] == "/" %} {% if file["is_dir"] %}
+            <i class="glyphicon glyphicon-folder-close"></i>
+            <a
+              href="#"
+              value="{{ url_for('api_v1_0.remote_home', remote=remote, path=path_links[0][0] + file['name'].split('/')[0]) }}"
+              >{{ file['name'] }}</a
+            >
             {% else %}
-              {% if file["is_dir"] %}
-                <i class="glyphicon glyphicon-folder-close"></i>
-                <a href="#" value="{{ url_for('api_v1_0.remote_home', remote=remote, path=path_links[-1][1] + '/' + file['name'].split('/')[0]) }}">{{ file['name'] }}</a>
-              {% else %}
-                <i class="glyphicon glyphicon-file"></i>
-                <a href="{{ url_for('api_v1_0.remote_home', remote=remote, path=path_links[-1][1] + '/' + file['name'].split('/')[0]) }}" value="{{ url_for('api_v1_0.remote_home', remote=remote, path=path_links[0][0] + file['name'].split('/')[0]) }}" download="{{ file['name'] }}">{{ file['name'] }}</a>
-              {% endif %}
-            {% endif %}
-          </td>
-          <td style="text-align: left;">
-            {% if file["is_dir"] %}
-                &nbsp;
+            <i class="glyphicon glyphicon-file"></i>
+            <a
+              href="{{ url_for('api_v1_0.remote_home', remote=remote, path=path_links[0][0] + file['name'].split('/')[0]) }}"
+              value="{{ url_for('api_v1_0.remote_home', remote=remote, path=path_links[0][0] + file['name'].split('/')[0]) }}"
+              download="{{ file['name'] }}"
+              >{{ file['name'] }}</a
+            >
+            {% endif %} {% else %} {% if file["is_dir"] %}
+            <i class="glyphicon glyphicon-folder-close"></i>
+            <a
+              href="#"
+              value="{{ url_for('api_v1_0.remote_home', remote=remote, path=path_links[-1][1] + '/' + file['name'].split('/')[0]) }}"
+              >{{ file['name'] }}</a
+            >
             {% else %}
-                {{ file['human_size'] }}
-            {% endif %}
+            <i class="glyphicon glyphicon-file"></i>
+            <a
+              href="{{ url_for('api_v1_0.remote_home', remote=remote, path=path_links[-1][1] + '/' + file['name'].split('/')[0]) }}"
+              value="{{ url_for('api_v1_0.remote_home', remote=remote, path=path_links[0][0] + file['name'].split('/')[0]) }}"
+              download="{{ file['name'] }}"
+              >{{ file['name'] }}</a
+            >
+            {% endif %} {% endif %}
           </td>
-          <td style="text-align: left;">
-            <div style="display: flex;justify-content: space-around;width: 55px;">
-            {% if path_links[-1][1] == "/" %}
-              <a class="delete_file_menu" href="#" value="{{ url_for('api_v1_0.remote_home', remote=remote, path=path_links[0][0] + file['name'].split('/')[0]) }}">
-                <i class="glyphicon glyphicon-trash" style="color: rgb(223, 0, 0);"></i>
+          <td style="text-align: left">
+            {% if file["is_dir"] %} &nbsp; {% else %} {{ file['human_size'] }} {% endif %}
+          </td>
+          <td style="text-align: left">
+            <div style="display: flex; justify-content: space-around; width: 55px">
+              {% if path_links[-1][1] == "/" %}
+              <a
+                class="delete_file_menu"
+                href="#"
+                value="{{ url_for('api_v1_0.remote_home', remote=remote, path=path_links[0][0] + file['name'].split('/')[0]) }}">
+                <i class="glyphicon glyphicon-trash" style="color: rgb(223, 0, 0)"></i>
               </a>
               {% if not file["is_dir"] %}
-                <a href="{{ url_for('api_v1_0.remote_home', remote=remote, path=path_links[0][0] + file['name'].split('/')[0]) }}" value="{{ url_for('api_v1_0.remote_home', remote=remote, path=path_links[-1][1] + '/' + file['name'].split('/')[0]) }}" download="{{ file['name'] }}">
-                  <i class="glyphicon glyphicon-cloud-download"></i>
-                </a>
-              {% endif %}
-            {% else %}
-              <a class="delete_file_menu" href="#" value="{{ url_for('api_v1_0.remote_home', remote=remote, path=path_links[-1][1] + '/' + file['name'].split('/')[0]) }}">
-                <i class="glyphicon glyphicon-trash" style="color: rgb(223, 0, 0);"></i>
+              <a
+                href="{{ url_for('api_v1_0.remote_home', remote=remote, path=path_links[0][0] + file['name'].split('/')[0]) }}"
+                value="{{ url_for('api_v1_0.remote_home', remote=remote, path=path_links[-1][1] + '/' + file['name'].split('/')[0]) }}"
+                download="{{ file['name'] }}">
+                <i class="glyphicon glyphicon-cloud-download"></i>
+              </a>
+              {% endif %} {% else %}
+              <a
+                class="delete_file_menu"
+                href="#"
+                value="{{ url_for('api_v1_0.remote_home', remote=remote, path=path_links[-1][1] + '/' + file['name'].split('/')[0]) }}">
+                <i class="glyphicon glyphicon-trash" style="color: rgb(223, 0, 0)"></i>
               </a>
               {% if not file["is_dir"] %}
-                <a href="{{ url_for('api_v1_0.remote_home', remote=remote, path=path_links[-1][1] + '/' + file['name'].split('/')[0]) }}" value="{{ url_for('api_v1_0.remote_home', remote=remote, path=path_links[-1][1] + '/' + file['name'].split('/')[0]) }}" download="{{ file['name'] }}">
-                  <i class="glyphicon glyphicon-cloud-download"></i>
-                </a>
-              {% endif %}
-            {% endif %}
+              <a
+                href="{{ url_for('api_v1_0.remote_home', remote=remote, path=path_links[-1][1] + '/' + file['name'].split('/')[0]) }}"
+                value="{{ url_for('api_v1_0.remote_home', remote=remote, path=path_links[-1][1] + '/' + file['name'].split('/')[0]) }}"
+                download="{{ file['name'] }}">
+                <i class="glyphicon glyphicon-cloud-download"></i>
+              </a>
+              {% endif %} {% endif %}
             </div>
           </td>
         </tr>
         {% endfor %}
-        </tbody>
-      </table>
-    </form>
-  </div>
+      </tbody>
+    </table>
+  </form>
+</div>
 {% else %}
-  <div class="alert alert-info">
-    当前没有数据选中，请点击左侧已经存在的存储/主机加载数据!
-  </div>
+<div class="alert alert-info">当前没有数据选中，请点击左侧已经存在的存储/主机加载数据!</div>
 {% endif %}

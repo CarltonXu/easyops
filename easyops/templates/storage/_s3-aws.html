@@ -1,66 +1,84 @@
 <div class="step02_content">
-    <div class="access_key_id">
-        <span>Access Key ID</span>
-        <input type="text" placeholder="Enter storage name">
-    </div>
-    <div class="secret_access_key">
-        <span>Secret Access Key</span>
-        <input type="password" placeholder="Enter storage name">
-    </div>
-    <div class="region">
-        <span>Region</span>
-        <select>
-            <option value="cn-northwest-1">cn-northwest-1(宁夏)</option>
-            <option value="cn-north-1">cn-north-1(北京)</option>
-        </select>
-    </div>
-    <div class="storage_acl">
-        <span>存储ACL访问权限</span>
-        <select>
-            <option value="private">私有</option>
-            <option value="public-read">公共读</option>
-            <option value="public-read-write">公共读写</option>
-            <option value="authenticated-read">认证用户读</option>
-            <option value="bucket-owner-read">桶所有者读</option>
-            <option value="bucket-owner-full-control">桶所有者全控制</option>
-        </select>
-    </div>
-    <div class="storage_class">
-        <span>存储类型</span>
-        <select>
-            <option value="STANDARD">标准存储</option>
-            <option value="STANDARD_IA">低频访问存储</option>
-            <option value="GLACIER">归档存储</option>
-        </select>
-    </div>
+  <div class="access_key_id">
+    <span>Access Key ID</span>
+    <input type="text" placeholder="Enter storage name" required />
+  </div>
+  <div class="secret_access_key">
+    <span>Secret Access Key</span>
+    <input type="password" placeholder="Enter storage name" required />
+  </div>
+  <div class="region">
+    <span>Region</span>
+    <select required>
+      <option value="cn-northwest-1">cn-northwest-1(宁夏)</option>
+      <option value="cn-north-1">cn-north-1(北京)</option>
+    </select>
+  </div>
+  <div class="storage_acl">
+    <span>存储ACL访问权限</span>
+    <select required>
+      <option value="private">私有</option>
+      <option value="public-read">公共读</option>
+      <option value="public-read-write">公共读写</option>
+      <option value="authenticated-read">认证用户读</option>
+      <option value="bucket-owner-read">桶所有者读</option>
+      <option value="bucket-owner-full-control">桶所有者全控制</option>
+    </select>
+  </div>
+  <div class="storage_class">
+    <span>存储类型</span>
+    <select required>
+      <option value="STANDARD">标准存储</option>
+      <option value="STANDARD_IA">低频访问存储</option>
+      <option value="GLACIER">归档存储</option>
+    </select>
+  </div>
 </div>
 <div class="step03_content">
-    <div class="storage_upload_cutoff">
-        <span class="glyphicon glyphicon-info-sign" data-toggle="tooltip" data-placement="left" title="任何大于此值的文件都将以此配置块大小上传">上传文件块切割</span>
-        <input type="text" name="upload_cutoff" value="1">
-        <div class="storage_upload_cutoff_unit">
-            <select style="width: 90px;">
-                <option value="K">KiB</option>
-                <option value="M">MiB</option>
-                <option value="G" selected>GiB</option>
-                <option value="T">TiB</option>
-            </select>
-        </div>
+  <div class="storage_upload_cutoff">
+    <span
+      class="glyphicon glyphicon-info-sign"
+      data-toggle="tooltip"
+      data-placement="left"
+      title="任何大于此值的文件都将以此配置块大小上传">
+      上传文件块切割
+    </span>
+    <input type="text" name="upload_cutoff" value="1" required />
+    <div class="storage_upload_cutoff_unit">
+      <select style="width: 90px">
+        <option value="K">KiB</option>
+        <option value="M">MiB</option>
+        <option value="G" selected>GiB</option>
+        <option value="T">TiB</option>
+      </select>
     </div>
-    <div class="storage_chunk_size">
-        <span class="glyphicon glyphicon-info-sign" data-toggle="tooltip" data-placement="left" title="上传大于[上传块切割大小]的文件时，将会使用此配置大小">上传文件块大小</span>
-        <input type="text" name="chunk_size" value="200">
-        <div class="storage_chunk_size_unit">
-            <select style="width: 90px;">
-                <option value="K">KiB</option>
-                <option value="M" selected>MiB</option>
-                <option value="G">GiB</option>
-                <option value="T">TiB</option>
-            </select>
-        </div>
+  </div>
+  <div class="storage_chunk_size">
+    <span
+      class="glyphicon glyphicon-info-sign"
+      data-toggle="tooltip"
+      data-placement="left"
+      title="上传大于[上传块切割大小]的文件时，将会使用此配置大小">
+      上传文件块大小
+    </span>
+    <input type="text" name="chunk_size" value="200" required />
+    <div class="storage_chunk_size_unit">
+      <select style="width: 90px" required>
+        <option value="K">KiB</option>
+        <option value="M" selected>MiB</option>
+        <option value="G">GiB</option>
+        <option value="T">TiB</option>
+      </select>
     </div>
-    <div class="storage_checksum">
-        <span class="glyphicon glyphicon-info-sign" data-toggle="tooltip" data-placement="left" title="关闭上传前的MD5校验，用于数据完整性检查。如果大文件可能会导致延迟上传（功能默认开启）">MD5校验关闭</span>
-        <input type="checkbox" name="disable_checksum">
-    </div>
+  </div>
+  <div class="storage_checksum">
+    <span
+      class="glyphicon glyphicon-info-sign"
+      data-toggle="tooltip"
+      data-placement="left"
+      title="关闭上传前的MD5校验，用于数据完整性检查。如果大文件可能会导致延迟上传（功能默认开启）">
+      MD5校验关闭
+    </span>
+    <input type="checkbox" name="disable_checksum" required />
+  </div>
 </div>
