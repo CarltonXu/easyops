@@ -23,7 +23,7 @@ EXCEL_DIR = os.path.join(os.path.dirname(BASE_DIR), "static/server_templates")
 @api.route("/manage_host", methods=["GET"])
 def manage_host():
     if request.method == "GET":
-        hosts_info = AnsibleHosts.query.all()
+        hosts_info = AnsibleHosts.query.filter_by(user_id=session.get("user_id")).all()
         return render_template("manage_host/host.html", hosts_info=hosts_info)
 
 
@@ -38,8 +38,10 @@ def add_host():
         port = host_info["port"]
         username = host_info["username"]
         password = host_info["password"]
+        user_id = session.get("user_id")
         if username and ipaddress and hostname and password:
-            query_ipaddr = AnsibleHosts.query.filter_by(ipaddress=ipaddress).first()
+            query_ipaddr = AnsibleHosts.query.filter_by(
+                user_id=user_id, ipaddress=ipaddress).first()
             if query_ipaddr is None:
                 try:
                     add_host = AnsibleHosts(
@@ -48,7 +50,8 @@ def add_host():
                         port=port,
                         username=username,
                         password=password,
-                        group=group
+                        group=group,
+                        user_id = user_id
                     )
                     db.session.add(add_host)
                     db.session.commit()
@@ -73,13 +76,15 @@ def add_host_from_excel():
     file_size = request.files.get("filesize")
     upload_filename = file.filename
     save_filepath = os.path.join(EXCEL_DIR, "upload_" + upload_filename)
+    user_id = session.get("user_id")
     try:
         file.save(save_filepath)
     except Exception as err:
         return "Save upload file {} failed.".format(upload_filename)
     batch_hosts = utils.insertServersFromExcel(save_filepath)
     for k, v in batch_hosts.items():
-        query_ipaddr = AnsibleHosts.query.filter_by(ipaddress=v[1]).first()
+        query_ipaddr = AnsibleHosts.query.filter_by(
+            user_id=user_id, ipaddress=v[1]).first()
         if query_ipaddr is None:
             try:
                 add_host = AnsibleHosts(
@@ -88,7 +93,8 @@ def add_host_from_excel():
                     port=v[2],
                     username=v[3],
                     password=v[4],
-                    group=v[5]
+                    group=v[5],
+                    user_id=user_id
                 )
                 db.session.add(add_host)
                 db.session.commit()
@@ -106,9 +112,11 @@ def delete_host():
     if request.method == "POST":
         form = request.form  
         exec_hosts = [ form.to_dict()[h] for h in form.to_dict() ]
+        user_id = session.get("user_id")
         for host in exec_hosts:
             try:
-                del_host = AnsibleHosts.query.filter_by(ipaddress=host).first()
+                del_host = AnsibleHosts.query.filter_by(
+                    user_id=user_id, ipaddress=host).first()
                 db.session.delete(del_host)
                 db.session.commit()
                 logging.debug("Delete %s hosts successful." % host)
@@ -129,6 +137,7 @@ def update_host():
         username = update_hosts["username"]
         password = update_hosts["password"]
         update_params = {}
+        user_id = session.get("user_id")
         if hostname:
             update_params["hostname"] = hostname
         if port:
@@ -139,7 +148,8 @@ def update_host():
             update_params["password"] = password
         update_params["group"] = group
         try:
-            upd_host = AnsibleHosts.query.filter_by(ipaddress=ipaddress).update(update_params)
+            upd_host = AnsibleHosts.query.filter_by(
+                user_id=user_id, ipaddress=ipaddress).update(update_params)
             db.session.commit()
         except Exception as err:
             logging.error(err)

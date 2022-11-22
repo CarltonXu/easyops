@@ -56,6 +56,7 @@ def add_storage():
     chunk_size_unit = storages_data.get("storage_chunk_size_unit")
     chunk_size = storages_data.get("storage_chunk_size") + chunk_size_unit
     checksum = storages_data.get("storage_checksum").upper()
+    user_id = session.get("user_id")
     
     if storage_type == "s3":
         storage = Storages(
@@ -70,11 +71,13 @@ def add_storage():
             storclass=storclass,
             upload_cutoff=upload_cutoff,
             chunk_size=chunk_size,
-            upload_checksum=bool(checksum)
+            upload_checksum=bool(checksum),
+            user_id=user_id
         )
 
         try:
-            if Storages.query.filter_by(name=name).first() or Storages.query.filter_by(access_key_id=access_key_id).first():
+            if Storages.query.filter_by(user_id=user_id, name=name).first() or \
+                Storages.query.filter_by(user_id=user_id, access_key_id=access_key_id).first():
                 response = make_response("已经存在的存储", 500)
                 return response
             db.session.add(storage) 
@@ -88,10 +91,12 @@ def add_storage():
 @api.route("/storage/delete", methods=["POST"])
 def delete_storage():
     form = request.form
+    user_id = session.get("user_id")
     storages = [ form.to_dict()[h] for h in form.to_dict() ]
     for stor_name in storages:
         try:
-            del_stor = Storages.query.filter_by(name=stor_name).first()
+            del_stor = Storages.query.filter_by(
+                user_id=user_id, name=stor_name).first()
             db.session.delete(del_stor)
             db.session.commit()
             logging.debug("Delete %s storage successful." % stor_name)

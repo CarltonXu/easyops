@@ -29,6 +29,7 @@ def overview():
 
 @api.route("/execute", methods=["GET", "POST"])
 def execute():
+    user_id = session.get("user_id")
     if request.method == "POST":
         form = request.form
         execute_info = form.to_dict()
@@ -48,7 +49,7 @@ def execute():
             flash("Not found some args.")
             return render_template("execute/_results.html")
     else:
-        remote_hosts = AnsibleHosts.query.all()
+        remote_hosts = AnsibleHosts.query.filter_by(user_id=user_id).all()
         return render_template("execute/remote.html", remote_hosts=remote_hosts)
 
 @api.route("/execute/host_details", methods=["GET", "POST"])

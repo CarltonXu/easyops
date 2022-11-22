@@ -107,7 +107,11 @@ def register():
     if request.method == "POST":
         username = request.form.get("username")
         password = request.form.get("password")
-        errormsg = None
+        repassword = request.form.get("repassword")
+        if password != repassword:
+            errormsg = "两次密码输入不一致"
+        else:
+            errormsg = None
         try:
             user = Users.query.filter_by(username=username).first()
         except Exception as err:
@@ -116,6 +120,7 @@ def register():
         else:
             if user is not None:
                 errormsg = "用户 %s 已经注册，请直接登陆" % (username)
+                flash(errormsg)
                 return redirect(url_for("api_v1_0.login"))
         if errormsg is None:
             register_time = datetime.datetime.now()

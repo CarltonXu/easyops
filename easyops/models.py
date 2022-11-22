@@ -22,11 +22,17 @@ class BaseModel(object):
 
 class Users(BaseModel, db.Model):
     __tablename__ = "users"
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(32), unique=True, nullable=False)
-    password_hash = db.Column(db.String(120), nullable=False)
-    register_time = db.Column(db.DateTime, default=datetime.now)
-    is_login = db.Column(db.Boolean, default=False)
+    id = db.Column(db.Integer, primary_key=True, comment="用户ID")
+    username = db.Column(db.String(32), unique=True, nullable=False, comment="用户名")
+    password_hash = db.Column(db.String(120), nullable=False, comment="密码")
+    register_time = db.Column(db.DateTime, default=datetime.now, comment="注册时间")
+    is_login = db.Column(db.Boolean, default=False, comment="登录标志位")
+    email = db.Column(db.String(120), comment="邮箱")
+    phone = db.Column(db.String(20), comment="手机号")
+    phonenumber = db.Column(db.String(11), comment="手机号码")
+    sex = db.Column(db.INTEGER, default=1, comment="用户性别（1男 2女 3未知）")
+    avatar = db.Column(db.String(100), comment="头像路径")
+    
 
     @property
     def password(self):
@@ -53,29 +59,34 @@ class Users(BaseModel, db.Model):
 
 class AnsibleHosts(BaseModel, db.Model):
     __tablename__ = "ansible_hosts"
-    id = db.Column(db.Integer, primary_key=True)
-    hostname = db.Column(db.String(100))
-    ipaddress = db.Column(db.String(100))
-    port = db.Column(db.Integer, default=22)
-    username = db.Column(db.String(100))
-    password = db.Column(db.String(100))
-    group = db.Column(db.String(100))
+    id = db.Column(db.Integer, primary_key=True, comment="主机ID")
+    user_id = db.Column(db.ForeignKey("users.id"), comment="关联用户ID")
+    hostname = db.Column(db.String(100), comment="主机名称")
+    ipaddress = db.Column(db.String(100), comment="IP地址")
+    access_type = db.Column(db.Integer, default=1, comment="访问类型 (1密码, 2密钥)")
+    port = db.Column(db.Integer, default=22, comment="端口")
+    username = db.Column(db.String(100), comment="访问用户名")
+    password = db.Column(db.String(100), comment="访问密码")
+    group = db.Column(db.String(100), comment="所属组")
+    user = db.relationship("Users", uselist=False, backref=backref("ansible_hosts", uselist=True))
 
 class Storages(BaseModel, db.Model):
     __tablename__ = 'storages'
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(100))
-    type = db.Column(db.String(100))
-    provider = db.Column(db.String(100))
-    region = db.Column(db.String(100))
-    access_key_id = db.Column(db.String(100))
-    secret_access_key = db.Column(db.String(100))
-    endpoint = db.Column(db.String(100))
-    acl = db.Column(db.String(100))
-    storclass = db.Column(db.String(100))
-    upload_cutoff = db.Column(db.String(100))
-    chunk_size = db.Column(db.String(100))
-    upload_checksum = db.Column(db.Boolean, default=False)
+    id = db.Column(db.Integer, primary_key=True, comment="存储ID")
+    user_id = db.Column(db.ForeignKey("users.id"), comment="关联用户ID")
+    name = db.Column(db.String(100), comment="存储名称")
+    type = db.Column(db.String(100), comment="存储类型")
+    provider = db.Column(db.String(100), comment="提供商")
+    region = db.Column(db.String(100), comment="区域")
+    access_key_id = db.Column(db.String(100), comment="访问key")
+    secret_access_key = db.Column(db.String(100), comment="访问密钥")
+    endpoint = db.Column(db.String(100), comment="访问端点")
+    acl = db.Column(db.String(100), comment="访问权限")
+    storclass = db.Column(db.String(100), comment="存储提供类型")
+    upload_cutoff = db.Column(db.String(100), comment="上传大小")
+    chunk_size = db.Column(db.String(100), comment="切分大小")
+    upload_checksum = db.Column(db.Boolean, default=False, comment="上传校验")
+    user = db.relationship("Users", uselist=False, backref=backref("storages", uselist=True))
 
 class UsersLoginHistory(BaseModel,db.Model):
     __tablename__ = "users_login_history"
