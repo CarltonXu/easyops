@@ -33,44 +33,22 @@ def login():
             if resp["response_code"] == 1002:
                 resp_verify_code = verify_login_code(session, verify_code_string)
                 if resp_verify_code["response_code"] == 1006:
-                    if session.get("user_id") is not None:
-                        session.clear()
-                        if remember_me:
-                            session.permanent = True
-                        session["user_id"] = resp_user_info["user_id"]
-                        user_login_history = get_user_last_login_history(username)
-                        if user_login_history["response_code"] == 1005:
-                            last_login_history = user_login_history.get("user_history")
+                    if session.get("user_id") is None:
+                       login_time = datetime.datetime.now() 
+                       resp = set_user_login_history(username, login_time, login_ipaddress, login_region)
 
-                        resp = make_response(render_template("index.html", last_login_history=last_login_history))
-                        if remember_me:
-                            resp.set_cookie("username", username, max_age=1296000)
-                            resp.set_cookie("password", password, max_age=1296000)
-                        else:
-                            resp.delete_cookie("username")
-                            resp.delete_cookie("password")
-                        return resp
+                    session.clear()
+                    session["user_id"] = resp_user_info["user_id"]
+                    if remember_me:
+                        session.permanent = True
+                    resp = make_response(render_template("index.html"))
+                    if remember_me:
+                        resp.set_cookie("username", username, max_age=1296000)
+                        resp.set_cookie("password", password, max_age=1296000)
                     else:
-                        login_time = datetime.datetime.now()
-                        resp = set_user_login_history(username, login_time, login_ipaddress, login_region)
-                        if resp.get("response_code") == 1004:
-                            session.clear()
-                            if remember_me:
-                                session.permanent = True
-                            session["user_id"] = resp_user_info["user_id"]
-                            user_login_history = get_user_last_login_history(username)
-                            if user_login_history["response_code"] == 1005:
-                                last_login_history = user_login_history.get("user_history")
-
-                            resp = make_response(render_template("index.html", last_login_history=last_login_history))
-                            if remember_me:
-                                resp.set_cookie("username", username, max_age=1296000)
-                                resp.set_cookie("password", password, max_age=1296000)
-                            else:
-                                resp.delete_cookie("username")
-                                resp.delete_cookie("password")
-                            return resp
-                        
+                        resp.delete_cookie("username")
+                        resp.delete_cookie("password")
+                    return resp
                 else:
                     flash(resp_verify_code["errormsg"])
             else:
@@ -79,12 +57,7 @@ def login():
             flash(resp_user_info["errormsg"])
 
     if session.get("user_id") is not None:
-        user_login_history = get_user_last_login_history(user_id=session.get("user_id"))
-        if user_login_history["response_code"] == 1005:
-            last_login_history = user_login_history.get("user_history")
-        else:
-            flash(user_login_history["errormsg"])
-        return render_template("index.html", last_login_history=last_login_history), 202
+        return render_template("index.html")
     else:
         return render_template("auth/login.html")
 
@@ -313,6 +286,27 @@ def set_user_login_history(username, login_time, login_ipaddress, login_region):
     return {
         "response_code": res_code,
         "errormsg": errormsg
+    }
+def get_user_login_history(username=None, user_id=None):
+    errormsg = None
+    try:
+        if username is not None:
+            user = Users.query.filter_by(username=username).first()
+            user_id = user.id
+        if user_id is not None:
+            user_id = user_id
+        users_login_info = UsersLoginHistory.query.filter_by(
+            user_id=user_id).order_by(UsersLoginHistory.id.desc()).all()
+    except Exception as err:
+        errormsg = "操作数据库失败，请检查数据库."
+        res_code = 3001
+    else:
+        res_code = 1005
+
+    return {
+        "response_code": res_code,
+        "errormsg": errormsg,
+        "user_history": users_login_info
     }
 
     

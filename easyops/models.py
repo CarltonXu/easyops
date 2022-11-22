@@ -27,6 +27,7 @@ class Users(BaseModel, db.Model):
     password_hash = db.Column(db.String(120), nullable=False, comment="密码")
     register_time = db.Column(db.DateTime, default=datetime.now, comment="注册时间")
     is_login = db.Column(db.Boolean, default=False, comment="登录标志位")
+    active = db.Column(db.Boolean, default=True, comment="激活状态")
     email = db.Column(db.String(120), comment="邮箱")
     phone = db.Column(db.String(20), comment="手机号")
     phonenumber = db.Column(db.String(11), comment="手机号码")
