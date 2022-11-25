@@ -99,7 +99,8 @@ def register():
             register_time = datetime.datetime.now()
             try:
                 au = Users(username=username,
-                register_time=register_time)
+                register_time=register_time,
+                avatar="/static/img/avatar/avatar.jpeg")
                 au.set_password = password
                 db.session.add(au)
                 db.session.commit()

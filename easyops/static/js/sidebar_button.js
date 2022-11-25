@@ -45,6 +45,24 @@
         },
       });
     });
+
+    $("#resources_menu").click(function (ev) {
+      $(".fa-angle-down").toggleClass("hidden");
+      $(".fa-angle-up").toggleClass("hidden");
+      $("#remote_execute").slideToggle("fast");
+      $("#data_sync").slideToggle("fast");
+    });
+    $("#login_btn").click(function () {
+      if ($("#username").val() == "" || $("#password").val() == "") {
+        $("#tips").html("Empty user name and password");
+        $(".tips-container").fadeIn("slow");
+        setTimeout(function () {
+          $(".tips-container").fadeOut("slow");
+        }, 3000);
+        return false;
+      }
+    });
+
     $("#remote_execute").click(function () {
       $("#context").hide();
       $.ajax({

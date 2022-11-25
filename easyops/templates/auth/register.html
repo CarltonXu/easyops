@@ -9,21 +9,10 @@
       <label for="username">用户名</label>
       <input type="text" name="username" id="username" placeholder="请输入用户名" required />
       <label type="password" for="password">密码</label>
-      <input
-        type="password"
-        name="password"
-        id="password"
-        placeholder="请输入密码"
-        onkeyup="checkpassword()"
-        required />
+      <input type="password" name="password" id="password" placeholder="请输入密码" required />
       <label type="password" for="password">确认密码</label>
-      <input
-        type="password"
-        name="repassword"
-        id="repassword"
-        placeholder="请再次输入密码"
-        onkeyup="checkpassword()"
-        required /><span id="tips"></span>
+      <input type="password" name="repassword" id="repassword" placeholder="请再次输入密码" required /><span
+        id="tips"></span>
       <input type="submit" value="提交注册" id="bt_input" />
       <span style="float: right; color: gray; padding-top: 8px">
         <a style="color: gray" href='{{ url_for("api_v1_0.login") }}'>已有账号?点击去登录</a>
