@@ -179,13 +179,11 @@ a:visited {
 }
 
 .master-menu {
-  display: block;
   height: 40px;
   cursor: pointer;
 }
 
 .child-menu {
-  display:none;
   background-color: #252b2f;
 }
 

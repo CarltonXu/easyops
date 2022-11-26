@@ -8,13 +8,6 @@
       return returnArray;
     };
 
-    $("#resources_menu").click(function (ev) {
-      $(".fa-angle-down").toggleClass("hidden");
-      $(".fa-angle-up").toggleClass("hidden");
-      $("#remote_execute").slideToggle("fast");
-      $("#data_sync").slideToggle("fast");
-    });
-
     $("#command_form :input")
       .on("blur", function () {
         if ($("#exec_cmd").val() == "" || $("#exec_host").val() == "") {

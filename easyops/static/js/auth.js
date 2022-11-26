@@ -37,6 +37,14 @@
     });
 
     $("#login_btn").click(function () {
+      if ($("#username").val() == "" || $("#password").val() == "") {
+        $("#tips").html("Empty user name and password");
+        $(".tips-container").fadeIn("slow");
+        setTimeout(function () {
+          $(".tips-container").fadeOut("slow");
+        }, 3000);
+        return false;
+      }
       try {
         $("#login_region").val(returnCitySN.cname);
         $("#login_ipaddress").val(returnCitySN.cip);
