@@ -1,0 +1,75 @@
+.step03_content {
+    display: none;
+}
+
+.step01_content>div,
+.step02_content>div,
+.step03_content>div {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: nowrap;
+    width: 600px;
+    margin-left: 84px;
+}
+
+.setup_content input,
+.setup_content select {
+    width: 60%;
+}
+
+;
+
+.initial_setup,
+.setup_driver,
+.advanced_setup {
+    display: inline-block;
+    margin-top: 6px;
+}
+
+.initial_setup {
+    display: inline-block;
+    margin-top: 6px;
+    margin-left: 95px;
+}
+
+.setup_driver {
+    display: inline-block;
+    margin-top: 6px;
+    margin-left: 180px;
+}
+
+.advanced_setup {
+    display: inline-block;
+    margin-top: 6px;
+    margin-left: 190px;
+}
+
+#prev_path_btn,
+#next_path_btn,
+#refresh_path_btn {
+    background: none;
+    border: none;
+    margin-right: 0.25rem !important;
+}
+
+#submit-storage-path_btn {
+    text-decoration: none;
+    margin-left: -35px;
+    margin-top: 7px;
+}
+
+#remote-storage-path {
+    height: 34px;
+    padding-left: 0px;
+    margin-top: 7px;
+    border: 1px solid #ccc;
+    border-left: none;
+}
+
+#remote-storage-name {
+    padding-right: 2px;
+    border-right: none;
+    outline: none;
+    cursor: text;
+}

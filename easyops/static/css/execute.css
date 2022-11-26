@@ -1,0 +1,30 @@
+.cmd-container {
+    display: block;
+    left: 29%;
+}
+
+#op_box {
+    display: block;
+    font-family: monospace;
+    color: white;
+    background-color: black;
+    width: 819px;
+    height: 500px;
+    padding: 15px;
+    border-radius: 3px;
+    resize: none;
+    white-space: none;
+}
+
+#show_cmd {
+    display: block;
+    font-family: monospace;
+    color: white;
+    background-color: black;
+    width: 819px;
+    height: 55px;
+    padding: 15px;
+    border-radius: 3px;
+    resize: none;
+    white-space: none;
+}

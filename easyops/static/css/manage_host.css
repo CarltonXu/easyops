@@ -1,0 +1,88 @@
+.add_hosts_menu {
+    position: absolute;
+    display: none;
+    z-index: 1000;
+    min-width: 160px;
+    height: 70px;
+    background-color: #fff;
+    border: 1px solid rgba(0, 0, 0, .15);
+    border-radius: 4px;
+    text-align: center;
+    padding: 5px 0;
+    margin: 2px 0 0;
+    font-size: 14px;
+    list-style: none;
+    box-shadow: 0 6px 12px rgb(0 0 0 / 18%);
+}
+
+.add_hosts_menu li {
+    line-height: 30px;
+    padding-right: 15px;
+}
+
+.add_hosts_menu li:hover {
+    background-color: #f5f5f5;
+}
+
+.host_details {
+    background-color: #ffffff;
+    position: fixed;
+    z-index: 2;
+    margin-top: -30px;
+    display: none;
+    border-radius: 4px;
+    font-size: 13px;
+    padding: 20px;
+    width: 35%;
+    height: 80%;
+    right: 0;
+    overflow: auto;
+}
+
+.host_details h1,
+.host_details h2 {
+    font-size: 14px;
+    border-left: solid 5px #ff0604;
+    padding-left: 8px;
+}
+
+.host_details .basic_items {
+    margin-bottom: 10px;
+    overflow: hidden;
+    word-break: break-all;
+}
+
+.basic_items {
+    display: flex;
+    white-space: nowrap;
+    text-align: center;
+    justify-content: space-between;
+}
+
+.basic_items .basic_label {
+    color: #a2a3a9;
+    text-align: left;
+    white-space: nowrap;
+}
+
+.mem_usage_container,
+.mount_usage_container {
+    float: left;
+    width: 80px;
+    height: 18px;
+    border: 1px solid;
+    padding: 1px;
+}
+
+.mem_usage,
+.mount_usage {
+    float: left;
+    width: 0px;
+    max-width: 116px;
+    height: 14px;
+    border: 0px;
+    background-color: green;
+    color: white;
+    text-align: center;
+    font-size: 12px;
+}
