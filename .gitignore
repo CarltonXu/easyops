@@ -2,3 +2,6 @@
 /workspace.easyops.code-workspace
 /migrations
 *.pyc
+.prettierrc
+.dump.rdb
+.vscode
