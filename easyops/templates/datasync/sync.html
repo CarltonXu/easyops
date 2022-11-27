@@ -1,51 +1,52 @@
-<div class="row" style="position: absolute; width: 100%; height: 92%;">
-  <div id="sidebar-remote" class="col-md-3 column" style="height:100%;background-color: #f8f9fa;">
-	<div class="row clearfix">
-		<div class="col-md-12 column">
-	      <h4 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
-		    <span>
-		      <i class="glyphicon glyphicon-hdd"></i>
-			  Remote Object Storages
-			</span>
-	      </h4>
-	      <ul class="nav flex-column mb-2">
-	  	  {% for remote_obj in remote_objs %}
-	  	  <li class="nav-item" style="background-color: #f2f2f2;border-bottom: solid 2px #f8f9fa;">
-	  	    <a class="nav-link" href="#">
-	  	  	<span data-feather="file-text"></span>
-	  	  	  {{ remote_obj.name }}: ({{ remote_obj.type }})
-	  	    </a>
-	  	  </li>
-	  	  {% endfor %}
-	      </ul>
-		</div>
-	</div>
-	<div class="row clearfix">
-		<div class="col-md-12 column">
-	      <h4 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
-	  	    <span>
-			  <i class="glyphicon glyphicon-tasks"></i>
-			  Remote Sftp Hosts
-			</span>
-	      </h4>
-	      <ul class="nav flex-column mb-2">
-	  	  {% for remote_sftp in remote_sftps %}
-	  	  <li class="nav-item" style="background-color: #f2f2f2;border-bottom: solid 2px #f8f9fa;">
-	  	    <a class="nav-link" href="#">
-	  	  	<span data-feather="file-text"></span>
-	  	  	  {{ remote_sftp.hostname }}: (sftp)
-	  	    </a>
-	  	  </li>
-	  	  {% endfor %}
-	      </ul>
-		</div>
-	</div>
+<div class="row" style="position: absolute; width: 100%; height: 92%">
+  <div id="sidebar-remote" class="col-md-3 column" style="height: 100%; background-color: #f8f9fa">
+    <div class="row clearfix">
+      <div class="col-md-12 column">
+        <h4 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+          <span>
+            <i class="glyphicon glyphicon-hdd"></i>
+            Remote Object Storages
+          </span>
+        </h4>
+        <ul class="nav flex-column mb-2">
+          {% for remote_obj in remote_objs %}
+          <li class="nav-item" style="background-color: #f2f2f2; border-bottom: solid 2px #f8f9fa">
+            <a class="nav-link" href="#">
+              <span data-feather="file-text"></span>
+              {{ remote_obj.name }}: ({{ remote_obj.type }})
+            </a>
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+    <div class="row clearfix">
+      <div class="col-md-12 column">
+        <h4 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+          <span>
+            <i class="glyphicon glyphicon-tasks"></i>
+            Remote Sftp Hosts
+          </span>
+        </h4>
+        <ul class="nav flex-column mb-2">
+          {% for remote_sftp in remote_sftps %}
+          <li class="nav-item" style="background-color: #f2f2f2; border-bottom: solid 2px #f8f9fa">
+            <a class="nav-link" href="#">
+              <span data-feather="file-text"></span>
+              {{ remote_sftp.hostname }}: (sftp)
+            </a>
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
   </div>
-  <div class="col-md-9 column" style="height:100%;">
-	<div class="row clearfix" style="height:100%;">
-		<div class="col-md-12 column" id="file_manager_context" style="height:100%;">
-	      {% include "datasync/_file_manager.html" %}
-		</div>
-	</div>
+  <div class="col-md-9 column" style="height: 100%">
+    <div class="row clearfix" style="height: 100%">
+      <div class="col-md-12 column" id="file_manager_context" style="height: 100%">
+        {% include "datasync/_file_manager.html" %}
+      </div>
+    </div>
+  </div>
 </div>
-<script type="text/javascript" src="{{ url_for('static', filename='js/datasync.js') }}"></script>
+<script type="text/javascript" src="{{ url_for("static", filename="js/datasync.js") }}">
