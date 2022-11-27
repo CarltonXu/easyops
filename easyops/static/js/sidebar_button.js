@@ -15,6 +15,7 @@
         },
       });
     });
+
     $("#host").click(function () {
       $("#context").hide();
       $.ajax({

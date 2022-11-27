@@ -3,9 +3,9 @@
   <head>
     <meta charset="utf-8">
 	  <title>{% block title %}{% endblock %} - EasyOps</title>
-	  <link rel="stylesheet" href="http://at.alicdn.com/t/font_2692640_ulk8ak8vra.css">
-	  <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css">
-	  <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+	  <link rel="stylesheet" href="{{ url_for("static", filename="css/lib/font_2692640_ulk8ak8vra.css") }}">
+	  <link rel="stylesheet" href="{{ url_for("static", filename="css/lib/font-awesome.min.css") }}">
+	  <link rel="stylesheet" href="{{ url_for("static", filename="css/lib/bootstrap.min.css") }}">
     <link rel="stylesheet" href="{{ url_for("static", filename="css/lib/toastr.min.css") }}">
     <link rel="stylesheet" href="{{ url_for("static", filename="css/lib/fileinput.min.css") }}">
     <link rel="stylesheet" href="{{ url_for("static", filename="css/lib/progress-step.css") }}">
@@ -18,10 +18,10 @@
 	  <link rel="stylesheet" href="{{ url_for("static", filename="css/manage_host.css") }}">
 	  <link rel="stylesheet" href="{{ url_for("static", filename="css/datasync.css") }}">
 
-    <script type="text/javascript" src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
-    <script type="text/javascript" src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="https://cdn.staticfile.org/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
-    <script type="text/javascript" src="https://cdn.staticfile.org/prototype/1.7.3/prototype.min.js"></script>
+    <script type="text/javascript" src="{{ url_for("static", filename="js/lib/jquery.min.js") }}"></script>
+    <script type="text/javascript" src="{{ url_for("static", filename="js/lib/bootstrap.min.js") }}"></script>
+    <script type="text/javascript" src="{{ url_for("static", filename="js/lib/jquery.cookie.min.js") }}"></script>
+    <script type="text/javascript" src="{{ url_for("static", filename="js/lib/prototype.min.js") }}"></script>
     <script type="text/javascript" src="{{ url_for("static", filename="js/lib/toastr.min.js") }}"></script>
     <script type="text/javascript" src="{{ url_for("static", filename="js/lib/fileinput.min.js") }}"></script>
     <script type="text/javascript" src="{{ url_for("static", filename="js/easyops.js") }}"></script>

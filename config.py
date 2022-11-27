@@ -23,7 +23,7 @@ class Config(object):
     REDIS_PORT = 6379
 
     SESSION_TYPE = "redis"
-    #SESSION_REDIS = redis.StrictRedis(host=REDIS_HOST, port=REDIS_PORT)
+    SESSION_REDIS = redis.StrictRedis(host=REDIS_HOST, port=REDIS_PORT)
     SESSION_USER_SIGNER = True
     PERMANENT_SESSION_LIFETIME = 86400
 

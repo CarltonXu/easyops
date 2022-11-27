@@ -19,12 +19,8 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_session import Session
 from flask_wtf import CSRFProtect
 
-# import sqlite3 db
-# from easyops.database import db
-
 # initialize sqlalchemy database object
 db = SQLAlchemy()
-
 
 # create redis connect object
 redis_store = None
