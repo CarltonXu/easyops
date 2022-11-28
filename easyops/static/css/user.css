@@ -1,28 +1,39 @@
 .user_manager_title {
     background-color: #f8f9fa;
     width: 100%;
-    height: 50px;
+    height: 40px;
 }
 
 .user_manager_title>h4 {
-    line-height: 50px;
+    line-height: 40px;
     padding-left: 15px;
 }
 
 .user_info_box {
-    display: inline-flex;
+    display: flex;
     flex-direction: row;
     justify-content: space-around;
     align-items: flex-start;
     flex-wrap: nowrap;
     height: 91%;
     width: 100%;
-    margin-top: 40px;
+    margin-top: 30px;
 }
 
 .user_base_info {
     width: 50%;
-    height: 100%;
+    height: 80%;
+}
+
+.user_base_info_box {
+    display: flex;
+    position: relative;
+    overflow: auto;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-content: center;
+    justify-content: center;
+    width: 100%;
 }
 
 .user_base_info_update_btn {
@@ -34,6 +45,12 @@
 .user_history_info {
     width: 40%;
     height: 80%;
+}
+
+.user_history_info_table {
+    width: 100%;
+    height: 80%;
+    overflow: auto;
 }
 
 .user_base_info,
@@ -65,6 +82,10 @@
     line-height: 30px;
 }
 
+.user_base_info_avatar_box {
+    width: 40% !important;
+}
+
 .user_base_info_content {
     display: flex;
     flex-direction: column;
@@ -79,6 +100,10 @@
     flex-wrap: nowrap;
     flex-direction: column;
     align-items: center;
+}
+
+.user_base_info_username {
+    font-weight: 700;
 }
 
 .user_base_info_id {
@@ -161,7 +186,7 @@
 }
 
 .user_base_info_content_text {
-    width: 70%;
+    width: 60%;
     padding: 1px 15px;
     margin-right: 30px;
 }

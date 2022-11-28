@@ -187,7 +187,7 @@
       for (var n = 0; n < obj_parents.length; n++) {
         selectdata[n] = obj_parents[n].siblings()[1].innerHTML;
       }
-      if (confirm("是否确定删除主机?")) {
+      if (confirm("是否确定删除主机?" + Object.values(selectdata))) {
         $.ajax({
           type: "POST",
           url: "/api/v1.0/host/delete",

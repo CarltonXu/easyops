@@ -134,14 +134,14 @@ def resetpassword():
                     user.set_password = resetpassword
                     db.session.add(user)
                     db.session.commit()
-                    return redirect(url_for("api_v1_0.login"))
+                    return redirect(url_for("api_v1_0.user"))
                 else:
                     errormsg = "老密码不正确，请重新输入"
             except Exception as err:
                 errormsg = "修改 %s 密码失败，请重新修改" % (username)
-        flash(errormsg)
+        return errormsg, 302
 
-    return render_template("auth/resetpassword.html")
+    return redirect(url_for("api_v1_0.user"))
 
 
 @api.route("/code", methods=["GET"])
