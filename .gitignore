@@ -3,5 +3,10 @@
 /migrations
 *.pyc
 .prettierrc
-.dump.rdb
+dump.rdb
 .vscode
+.DS_Store
+*.jpeg
+*.jpg
+*.png
+*.gif

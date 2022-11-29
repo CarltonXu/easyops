@@ -72,7 +72,9 @@
           url: "/api/v1.0/update_user",
           data: user_data,
           success: function (data) {
-            $(".row").html(data);
+            sleep(300).then(() => {
+              $("#context").html(data);
+            });
             toastr.success("更新用户信息成功");
           },
           error: function () {
@@ -108,7 +110,9 @@
         processData: false,
         contentType: false,
         success: function (data) {
-          $(".row").html(data);
+          sleep(300).then(() => {
+            $("#context").html(data);
+          });
           toastr.success("更新头像成功");
         },
         error: function (data) {
