@@ -125,30 +125,30 @@
     $("#reset_password_btn").click(function () {
       var username = $(".user_base_info_username").text();
       $("#reset_username").val(username);
-      $("#submit_reset_password").click(function () {
-        var username = $("#reset_username").val();
-        var password = $("#reset_password").val();
-        var resetpassword = $("#reset_repassword").val();
-        var data = {};
-        data["username"] = username;
-        data["password"] = password;
-        data["resetpassword"] = resetpassword;
-        $.ajax({
-          type: "POST",
-          url: "/api/v1.0/resetpassword",
-          data: data,
-          success: function (data) {
-            toastr.success("修改密码成功");
-            $("#close_reset_password").click();
-            sleep(300).then(() => {
-              $("#context").html(data);
-            });
-          },
-          error: function (data) {
-            console.log(data);
-            toastr.error(data.responseText);
-          },
-        });
+    });
+
+    $("#submit_reset_password").click(function () {
+      var username = $("#reset_username").val();
+      var password = $("#reset_password").val();
+      var resetpassword = $("#reset_repassword").val();
+      var data = {};
+      data["username"] = username;
+      data["password"] = password;
+      data["resetpassword"] = resetpassword;
+      $.ajax({
+        type: "POST",
+        url: "/api/v1.0/resetpassword",
+        data: data,
+        success: function (data) {
+          toastr.success("修改密码成功");
+          $("#close_reset_password").click();
+          sleep(300).then(() => {
+            $("#context").html(data);
+          });
+        },
+        error: function (data) {
+          toastr.error(data.responseText);
+        },
       });
     });
   });
