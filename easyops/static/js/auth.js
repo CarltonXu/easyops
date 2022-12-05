@@ -20,6 +20,17 @@
       }
     });
 
+    $("#wy-lg-eye-btn").click(function () {
+      const changeInputBtnType = $("#wy-lg-eye-btn").siblings("input");
+      if (changeInputBtnType.attr("type") == "password") {
+        $("#wy-lg-eye-btn").removeClass("glyphicon-eye-open").addClass("glyphicon-eye-close");
+        changeInputBtnType.attr("type", "text");
+      } else {
+        $("#wy-lg-eye-btn").removeClass("glyphicon-eye-close").addClass("glyphicon-eye-open");
+        changeInputBtnType.attr("type", "password");
+      }
+    });
+
     $("#repassword").keyup(function () {
       ps1 = $("#password").val();
       ps2 = $("#repassword").val();

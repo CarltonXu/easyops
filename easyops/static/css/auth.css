@@ -52,3 +52,10 @@
 .wy-rst-form>form {
     margin: 30px;
 }
+
+.wy-lg-eye {
+    position: absolute;
+    line-height: 40px;
+    right: 15px;
+    font-size: 15px;
+}

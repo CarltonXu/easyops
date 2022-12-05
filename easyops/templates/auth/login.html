@@ -9,19 +9,32 @@
       <label for="username">用户名</label>
       <input id="username" type="text" name="username" placeholder="请输入用户名" required />
       <label for="password">密码</label>
-      <input id="password" type="password" name="password" placeholder="请输入密码" required />
-      <label for="verify_code">验证码</label></br>
-      <input style="width: 260px; border: 1px solid #d9d9d9;" id="verify_code" type="text" name="verify_code" placeholder="请输入验证码" required />
-      <img style="margin-left: 15px; cursor: pointer;" src="/api/v1.0/code" class="verify_code" onclick="this.src='/api/v1.0/code?' + Math.random()" />
+      <div style="position: relative">
+        <input id="password" type="password" name="password" placeholder="请输入密码" required />
+        <span id="wy-lg-eye-btn" class="wy-lg-eye glyphicon glyphicon-eye-open"></span>
+      </div>
+      <label for="verify_code">验证码</label><br />
+      <input
+        style="width: 260px; border: 1px solid #d9d9d9"
+        id="verify_code"
+        type="text"
+        name="verify_code"
+        placeholder="请输入验证码"
+        required />
+      <img
+        style="margin-left: 15px; cursor: pointer"
+        src="/api/v1.0/code"
+        class="verify_code"
+        onclick="this.src='/api/v1.0/code?' + Math.random()" />
       <input id="login_ipaddress" type="text" name="login_ipaddress" style="display: none" />
       <input id="login_region" type="text" name="login_region" style="display: none" />
       <label for="remember" style="margin-bottom: 10px">
-        <input type="checkbox" name="remember" id="remember" value="1">  记住我
+        <input type="checkbox" name="remember" id="remember" value="1" /> 记住我
       </label>
       {% for msg in get_flashed_messages() %}
       <span style="float: right; color: red">{{msg}}</span>
       {% endfor %}
-      <input id="login_btn" type="submit" value="登录"/> 
+      <input id="login_btn" type="submit" value="登录" />
       <span style="float: left; color: gray; padding-top: 8px">
         <a style="color: gray" href='{{ url_for("api_v1_0.resetpassword") }}'>忘记密码?</a>
       </span>
