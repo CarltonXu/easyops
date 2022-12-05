@@ -3,7 +3,7 @@
     setInterval(function time() {
       var date = new Date();
       var year = date.getFullYear();
-      var month = date.getMonth();
+      var month = date.getMonth() + 1;
       var day = date.getDate();
       var hour = date.getHours();
       hour = hour < 10 ? "0" + hour : hour;
@@ -15,5 +15,9 @@
       var str = "现在时间: " + year + "年" + month + "月" + day + "日&nbsp" + format_time;
       $(".navbar-current-time").html(str);
     }, 1000);
+
+    $("#user-manage-nav").on("click", function () {
+      $("#user").click();
+    });
   });
 })(jQuery);

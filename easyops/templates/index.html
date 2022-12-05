@@ -77,17 +77,43 @@
       <div class="navbar-right-menu">
         <div class="navbar-user-col">
           {% if g.user %}
-          <span class="glyphicon glyphicon-user"></span> {{ g.user["username"] }}
-          <span class="glyphicon glyphicon-log-out"></span> <a href="{{ url_for('api_v1_0.logout') }}">LogOut</a>
+          <div class="app-utility-item app-user-dropdown dropdown">
+            <a
+              class="dropdown-toggle"
+              id="user-dropdown-toggle"
+              data-toggle="dropdown"
+              href="#"
+              role="button"
+              aria-expanded="false">
+              <img
+                id="navbar-avatar"
+                style="width: 36px; height: 36px; border-radius: 18px"
+                src="{{ user_avatar_path }}"
+                alt="" />
+              <span>{{ g.user["username"] }}</span>
+              <span class="glyphicon glyphicon-chevron-down"></span>
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="user-dropdown-toggle">
+              <li>
+                <a id="user-manage-nav" class="dropdown-item" href="#">用户管理</a>
+              </li>
+              <li>
+                <hr class="dropdown-divider" />
+              </li>
+              <li>
+                <a class="dropdown-item" href="{{ url_for('api_v1_0.logout')}}">退出登录</a>
+              </li>
+            </ul>
+          </div>
           {% else %}
           <a href="{{ url_for('api_v1_0.register') }}">Register</a>
           <span class="glyphicon glyphicon-log-out"></span> <a href="{{ url_for('api_v1_0.login') }}">LogIn</a>
           {% endif %}
         </div>
       </div>
+      <div class="container-fluid rightcontent" id="context">{% include "overview/overview.html" %}</div>
     </div>
-    <div class="container-fluid rightcontent" id="context">{% include "overview/overview.html" %}</div>
   </div>
+  <div class="overall-mask"></div>
+  {% endblock %}
 </div>
-<div class="overall-mask"></div>
-{% endblock %}

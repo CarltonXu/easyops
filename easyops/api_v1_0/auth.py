@@ -41,7 +41,8 @@ def login():
                     session["user_id"] = resp_user_info["user_id"]
                     if remember_me:
                         session.permanent = True
-                    resp = make_response(render_template("index.html"))
+                    user_avatar_path = get_user_avatar_path(session.get("user_id")).get("user_avatar_path")
+                    resp = make_response(render_template("index.html", user_avatar_path=user_avatar_path))
                     if remember_me:
                         resp.set_cookie("username", username, max_age=1296000)
                         resp.set_cookie("password", password, max_age=1296000)
@@ -57,7 +58,8 @@ def login():
             flash(resp_user_info["errormsg"])
 
     if session.get("user_id") is not None:
-        return render_template("index.html")
+        user_avatar_path = get_user_avatar_path(session.get("user_id")).get("user_avatar_path")
+        return render_template("index.html", user_avatar_path=user_avatar_path)
     else:
         return render_template("auth/login.html")
 
@@ -198,6 +200,29 @@ def verify_login_code(session, verify_code_string):
         "errormsg": errormsg
     }
 
+def get_user_avatar_path(user_id):
+    errormsg = None
+    try:
+        user = Users.query.filter_by(id=user_id).first()
+    except Exception as err:
+        logging.error(err)
+        errormsg = "数据库查询失败"
+        res_code = 3001
+    else:
+        if user is None:
+            errormsg = "用户不存在"
+            res_code = 3002
+            user_id = None
+        else:
+            res_code = 1001
+            user_avatar_path = user.avatar
+
+    return {
+        "response_code": res_code,
+        "errormsg": errormsg,
+        "user_avatar_path": user_avatar_path
+    }
+
 def check_user_exsits(user):
     errormsg = None
     try:
@@ -218,7 +243,7 @@ def check_user_exsits(user):
     return {
         "response_code": res_code,
         "errormsg": errormsg,
-        "user_id": user_id
+        "user_id": user_id,
     }
 
 def check_user_password(user, password):

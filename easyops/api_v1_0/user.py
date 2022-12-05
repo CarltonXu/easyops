@@ -2,6 +2,8 @@
 # coding:utf8
 import os
 import logging
+import random
+import string
 
 from flask import (
     flash, redirect, render_template, url_for, request, session)
@@ -50,11 +52,10 @@ def update_user():
 def update_user_avatar():
     user_id = session.get("user_id")
     avatar_file = request.files.get("file")
-    avatar_file_size = request.files.get("size")
-    avatar_file_name = avatar_file.filename
-    avatar_file_rename = "avatar_user" + str(user_id) + "." + avatar_file_name.split(".")[1]
-    avatar_save_path= os.path.join(UPLOAD_AVATAR_DIR, avatar_file_rename) 
-    avatar_path = os.path.join("/static/img/avatar", avatar_file_rename)
+    avatar_img_suffix = "." + avatar_file.filename.split(".")[1]
+    avatar_file_name = "".join(random.sample(string.ascii_letters + string.digits, 8)) + avatar_img_suffix
+    avatar_save_path = os.path.join(UPLOAD_AVATAR_DIR, avatar_file_name) 
+    avatar_path = os.path.join("/static/img/avatar", avatar_file_name)
     try:
         avatar_file.save(avatar_save_path)
         user = Users.query.filter_by(id=user_id).update({"avatar": avatar_path})

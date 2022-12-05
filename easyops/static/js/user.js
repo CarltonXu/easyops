@@ -113,6 +113,8 @@
           sleep(300).then(() => {
             $("#context").html(data);
           });
+          var new_avatar = $("#user_avatar_img").attr("src");
+          $("#navbar-avatar").attr("src", new_avatar);
           toastr.success("更新头像成功");
         },
         error: function (data) {

@@ -1,43 +1,38 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta charset="utf-8">
-	  <title>{% block title %}{% endblock %} - EasyOps</title>
-	  <link rel="stylesheet" href="{{ url_for("static", filename="css/lib/font_2692640_ulk8ak8vra.css") }}">
-	  <link rel="stylesheet" href="{{ url_for("static", filename="css/lib/font-awesome.min.css") }}">
-	  <link rel="stylesheet" href="{{ url_for("static", filename="css/lib/bootstrap.min.css") }}">
-    <link rel="stylesheet" href="{{ url_for("static", filename="css/lib/toastr.min.css") }}">
-    <link rel="stylesheet" href="{{ url_for("static", filename="css/lib/fileinput.min.css") }}">
-    <link rel="stylesheet" href="{{ url_for("static", filename="css/lib/progress-step.css") }}">
-	  <link rel="stylesheet" href="{{ url_for("static", filename="css/easyops.css") }}">
-	  <link rel="stylesheet" href="{{ url_for("static", filename="css/user.css") }}">
-	  <link rel="stylesheet" href="{{ url_for("static", filename="css/auth.css") }}">
-	  <link rel="stylesheet" href="{{ url_for("static", filename="css/sidebar.css") }}">
-	  <link rel="stylesheet" href="{{ url_for("static", filename="css/storage.css") }}">
-	  <link rel="stylesheet" href="{{ url_for("static", filename="css/execute.css") }}">
-	  <link rel="stylesheet" href="{{ url_for("static", filename="css/manage_host.css") }}">
-	  <link rel="stylesheet" href="{{ url_for("static", filename="css/datasync.css") }}">
-
-    <script type="text/javascript" src="{{ url_for("static", filename="js/lib/jquery.min.js") }}"></script>
-    <script type="text/javascript" src="{{ url_for("static", filename="js/lib/bootstrap.min.js") }}"></script>
-    <script type="text/javascript" src="{{ url_for("static", filename="js/lib/jquery.cookie.min.js") }}"></script>
-    <script type="text/javascript" src="{{ url_for("static", filename="js/lib/prototype.min.js") }}"></script>
-    <script type="text/javascript" src="{{ url_for("static", filename="js/lib/toastr.min.js") }}"></script>
-    <script type="text/javascript" src="{{ url_for("static", filename="js/lib/fileinput.min.js") }}"></script>
-    <script type="text/javascript" src="{{ url_for("static", filename="js/easyops.js") }}"></script>
-    <script type="text/javascript" src="{{ url_for("static", filename="js/user.js") }}"></script>
-    <script type="text/javascript" src="{{ url_for("static", filename="js/sidebar_button.js") }}"></script>
-    <script type="text/javascript" src="{{ url_for("static", filename="js/auth.js") }}"></script> 
+    <meta charset="utf-8" />
+    <title>{% block title %}{% endblock %} - EasyOps</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/lib/font_2692640_ulk8ak8vra.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/lib/font-awesome.min.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/lib/bootstrap.min.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/lib/toastr.min.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/lib/fileinput.min.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/lib/progress-step.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/easyops.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/user.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/auth.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/sidebar.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/storage.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/execute.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/manage_host.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/datasync.css') }}" />
+    <script type="text/javascript" src="{{ url_for('static', filename='js/lib/jquery.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/lib/bootstrap.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/lib/jquery.cookie.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/lib/prototype.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/lib/toastr.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/lib/fileinput.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/easyops.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/user.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/sidebar_button.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/auth.js') }}"></script>
     <script type="text/javascript" src="http://pv.sohu.com/cityjson?ie=utf-8"></script>
   </head>
   <body>
-	{% block lgmenu %}
-	{% endblock %}
-	{% block navpage %}
-    {% block content %}{% endblock %}
-	{% endblock %}
-  <div class="tips-container">
-    <span id="tips"></span>
-  </div>
+    {% block lgmenu %} {% endblock %} {% block navpage %} {% block content %}{% endblock %} {% endblock %}
+    <div class="tips-container">
+      <span id="tips"></span>
+    </div>
   </body>
 </html>
