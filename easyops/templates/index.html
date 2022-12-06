@@ -88,9 +88,9 @@
               <img
                 id="navbar-avatar"
                 style="width: 36px; height: 36px; border-radius: 18px"
-                src="{{ user_avatar_path }}"
+                src="{{ avatar_path['user_avatar_path'] }}"
                 alt="" />
-              <span>{{ g.user["username"] }}</span>
+              <span>{{ g.user.username }}</span>
               <span class="glyphicon glyphicon-chevron-down"></span>
             </a>
             <ul class="dropdown-menu" aria-labelledby="user-dropdown-toggle">

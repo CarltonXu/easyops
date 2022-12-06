@@ -6,28 +6,29 @@ import random
 import string
 
 from flask import (
-    flash, redirect, render_template, url_for, request, session)
+    redirect, render_template, url_for, request, session)
 
-from easyops import db
-from easyops.models import Users
+from easyops import csrf
 from easyops.api_v1_0 import api
-from easyops.api_v1_0.auth import get_user_last_login_history, get_user_login_history
+from easyops.controller.users.users import UsersManager
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 UPLOAD_AVATAR_DIR = os.path.join(os.path.dirname(BASE_DIR), "static/img/avatar")
 
+@csrf.exempt
 @api.route("/user", methods=["GET", "POST"])
 def user():
     user_id = session.get("user_id")
     if request.method == "GET":
-        users_info = Users.query.filter_by(id=user_id).first()
-        last_login_info = get_user_last_login_history(user_id=user_id).get("user_history")
-        logins_info = get_user_login_history(user_id=user_id).get("user_history")
+        user = UsersManager(user_id=user_id)
+        last_login_info = user.get_user_last_login_history().get("user_history")
+        logins_info = user.get_user_login_history().get("user_history")
         return render_template("user/user.html",
-                                users_info=users_info,
+                                users_info=user.user,
                                 last_login_info=last_login_info,
                                 logins_info=logins_info)
 
+@csrf.exempt
 @api.route("/update_user", methods=["POST"])
 def update_user():
     user_id = session.get("user_id")
@@ -40,17 +41,15 @@ def update_user():
         "phonenumber": phone,
         "sex": sex
     }
-    try:
-        user = Users.query.filter_by(id=user_id).update(update_params)
-        db.session.commit()
-    except Exception as err:
-        logging.error(err)
-        flash("操作数据库更新失败")
+    user = UsersManager(user_id=user_id)
+    user.update_user_info(update_params)
     return redirect(url_for("api_v1_0.user"))
 
+@csrf.exempt
 @api.route("/update_avatar", methods=["POST"])
 def update_user_avatar():
     user_id = session.get("user_id")
+    user = UsersManager(user_id=user_id)
     avatar_file = request.files.get("file")
     avatar_img_suffix = "." + avatar_file.filename.split(".")[1]
     avatar_file_name = "".join(random.sample(string.ascii_letters + string.digits, 8)) + avatar_img_suffix
@@ -58,8 +57,7 @@ def update_user_avatar():
     avatar_path = os.path.join("/static/img/avatar", avatar_file_name)
     try:
         avatar_file.save(avatar_save_path)
-        user = Users.query.filter_by(id=user_id).update({"avatar": avatar_path})
-        db.session.commit()
+        user.set_user_avatar(avatar_path)
     except Exception as err:
         return "Save upload file {} failed, error: {}".format(avatar_file_name, err)
     return redirect(url_for("api_v1_0.user"))

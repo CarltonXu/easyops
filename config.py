@@ -17,8 +17,6 @@ class Config(object):
     SQLALCHEMY_DATABASE_URI = "mysql://easyops:easyopsPass@localhost:3306/easyops"
     SQLALCHEMY_TRACK_MODIFICATIONS = True
 
-    # This is a sqlite3 db configure section
-    #DATABASE = "/Users/CarltonXu/workspace/codes/flask/easyops/instance/easyops.sqlite"
     REDIS_HOST = "127.0.0.1"
     REDIS_PORT = 6379
 

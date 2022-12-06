@@ -24,6 +24,7 @@ db = SQLAlchemy()
 
 # create redis connect object
 redis_store = None
+csrf = None
 
 def create_app(config_name):
     """
@@ -50,7 +51,8 @@ def create_app(config_name):
     Session(app)
 
     # add flask csrf protect
-    # csrf = CSRFProtect(app)
+    global csrf
+    csrf = CSRFProtect(app)
 
     # register blueprint
     from easyops import api_v1_0

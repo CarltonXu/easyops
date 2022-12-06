@@ -10,11 +10,41 @@
 # coding:utf-8
 #
 
-from flask import redirect, url_for
+import functools
+
+from flask import session, redirect, url_for, g, render_template
+
+
+from easyops.models.models import Users
+from easyops.controller.users.users import UsersManager
 
 from . import api
 
+@api.before_app_request
+def load_logged_in_user():
+    user_id = session.get("user_id")
+    user = UsersManager(user_id=user_id)
+
+    if user_id is None:
+        g.user = None
+    else:
+        g.user = user.user
+
+
+def login_required(view):
+    @functools.wraps(view)
+    def wrapped_view(**kwargs):
+        if g.user is None:
+            return redirect(url_for('api_v1_0.login'))
+
+        return view(**kwargs)
+
+    return wrapped_view
 
 @api.route("/index", methods=["GET"])
+@login_required
 def index():
-    return redirect(url_for("api_v1_0.login"))
+    user_id = session.get("user_id")
+    user = UsersManager(user_id=user_id)
+    avatar_path = user.get_user_avatar_path()
+    return render_template("index.html", avatar_path=avatar_path)

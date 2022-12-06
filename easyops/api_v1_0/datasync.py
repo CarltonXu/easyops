@@ -12,17 +12,16 @@ from functools import cmp_to_key
 from sarge import run, Capture
 
 from flask import (
-    Blueprint, flash, Response, redirect,
-    render_template, url_for, request, session)
+    Response, render_template, request, session)
 
 from werkzeug.datastructures import Headers
 
-from easyops import constants, db
+from easyops import db
 from easyops.utils import utils
 from easyops.libs.ansible.api import Task
 from easyops.libs.rclone import rclone
-from easyops.models import AnsibleHosts
-from easyops.models import Storages
+from easyops.models.models import AnsibleHosts
+from easyops.models.models import Storages
 from easyops.api_v1_0 import api
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))

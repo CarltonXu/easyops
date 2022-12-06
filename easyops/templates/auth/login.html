@@ -5,7 +5,8 @@
   </div>
   <div class="wy-lg-form">
     <h1>{% block title %}登录{% endblock %}</h1>
-    <form method="post" action="/api/v1.0/login" role="form">
+    <form method="post" action="{{ url_for('api_v1_0.login') }}" role="form">
+      {{ form.csrf_token }}
       <label for="username">用户名</label>
       <input id="username" type="text" name="username" placeholder="请输入用户名" required />
       <label for="password">密码</label>
@@ -20,6 +21,7 @@
         type="text"
         name="verify_code"
         placeholder="请输入验证码"
+        maxlength="4"
         required />
       <img
         style="margin-left: 15px; cursor: pointer"
@@ -31,9 +33,13 @@
       <label for="remember" style="margin-bottom: 10px">
         <input type="checkbox" name="remember" id="remember" value="1" /> 记住我
       </label>
-      {% for msg in get_flashed_messages() %}
-      <span style="float: right; color: red">{{msg}}</span>
-      {% endfor %}
+      {% if form.username.errors %} {% for msg in form.username.errors %}
+      <span style="float: right; color: red">{{ msg }}</span>
+      {% endfor %} {% elif form.password.errors %} {% for msg in form.password.errors %}
+      <span style="float: right; color: red">{{ msg }}</span>
+      {% endfor %} {% endif %} {% if get_flashed_messages() %} {% for msg in get_flashed_messages() %}
+      <span style="float: right; color: red">{{ msg }}</span>
+      {% endfor %} {% endif %}
       <input id="login_btn" type="submit" value="登录" />
       <span style="float: left; color: gray; padding-top: 8px">
         <a style="color: gray" href='{{ url_for("api_v1_0.resetpassword") }}'>忘记密码?</a>
