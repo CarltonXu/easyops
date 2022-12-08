@@ -3,18 +3,20 @@
 import os
 import logging
 
-from flask import (
-    redirect, render_template, url_for, request, session, make_response)
+from flask import redirect, render_template, url_for, request, session, make_response
 
-from easyops import db
-from easyops.models.models import Storages
+from easyops import csrf
+from easyops.controller.storages.storages import StoragesManager
 from easyops.api_v1_0 import api
 
+@csrf.exempt
 @api.route("/storage", methods=["GET"])
 def storage_manage():
-    storages = Storages.query.all()
-    return render_template("storage/storage.html", storages_info=storages)
+    user_id = session.get("user_id")
+    storages = StoragesManager(user_id=user_id)
+    return render_template("storage/storage.html", storages_info=storages.storages)
 
+@csrf.exempt
 @api.route("/storage/type", methods=["POST"])
 def get_storage_type():
     form = request.form
@@ -32,6 +34,7 @@ def get_storage_type():
         response = make_response("暂不支持驱动类型", 500)
         return response
 
+@csrf.exempt
 @api.route("/storage/add", methods=["POST"])
 def add_storage():
     form = request.form
@@ -51,37 +54,34 @@ def add_storage():
     chunk_size = storages_data.get("storage_chunk_size") + chunk_size_unit
     checksum = storages_data.get("storage_checksum").upper()
     user_id = session.get("user_id")
-    
+    storages = StoragesManager(user_id=user_id, storage_name=name, access_key_id=access_key_id)
+
+    storage_args = {
+        "name": name,
+        "type": storage_type,
+        "provider": provider,
+        "region": region,
+        "access_key_id": access_key_id,
+        "secret_access_key": secret_access_key,
+        "endpoint": endpoint,
+        "acl": storacl,
+        "storclass": storclass,
+        "upload_cutoff": upload_cutoff,
+        "chunk_size": chunk_size,
+        "upload_checksum": bool(checksum),
+        "user_id": user_id
+    }
+
     if storage_type == "s3":
-        storage = Storages(
-            name=name,
-            type=storage_type,
-            provider=provider,
-            region=region,
-            access_key_id=access_key_id,
-            secret_access_key=secret_access_key,
-            endpoint=endpoint,
-            acl=storacl,
-            storclass=storclass,
-            upload_cutoff=upload_cutoff,
-            chunk_size=chunk_size,
-            upload_checksum=bool(checksum),
-            user_id=user_id
-        )
-
-        try:
-            if Storages.query.filter_by(user_id=user_id, name=name).first() or \
-                Storages.query.filter_by(user_id=user_id, access_key_id=access_key_id).first():
-                response = make_response("已经存在的存储", 500)
-                return response
-            db.session.add(storage) 
-            db.session.commit()
-        except Exception as err:
-            logging.error(err)
+        if storages.exists_storage():
+            response = make_response("已经存在的存储", 500)
+        if storages.create_storage(**storage_args):
+            return redirect(url_for("api_v1_0.storage_manage"))
+        else:
             response = make_response("添加主机失败，请重试", 500)
-            return response
-        return redirect(url_for("api_v1_0.storage_manage"))
+        return response
 
+@csrf.exempt
 @api.route("/storage/delete", methods=["POST"])
 def delete_storage():
     form = request.form
@@ -89,11 +89,9 @@ def delete_storage():
     storages = [ form.to_dict()[h] for h in form.to_dict() ]
     for stor_name in storages:
         try:
-            del_stor = Storages.query.filter_by(
-                user_id=user_id, name=stor_name).first()
-            db.session.delete(del_stor)
-            db.session.commit()
-            logging.debug("Delete %s storage successful." % stor_name)
+            storage = StoragesManager(user_id=user_id, storage_name=stor_name)
+            if storage.delete_storage()["code"] == 0:
+                logging.debug("Delete %s storage successful." % stor_name)
         except Exception as err:
             logging.error(err)
             response = make_response("操作数据库删除主机失败", 500)

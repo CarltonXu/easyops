@@ -48,3 +48,12 @@ def index():
     user = UsersManager(user_id=user_id)
     avatar_path = user.get_user_avatar_path()
     return render_template("index.html", avatar_path=avatar_path)
+
+@api.route("/overview", methods=["GET"])
+@login_required
+def overview():
+    user_id = session.get("user_id")
+    if user_id is not None:
+        return render_template("overview/overview.html")
+    else:
+        return redirect(url_for("api_v1_0.login"))

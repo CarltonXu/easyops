@@ -3,16 +3,19 @@ import logging
 from easyops import db
 from easyops.models.models import AnsibleHosts
 
-class HostsManager():
-    def __init__(self, user_id=None, ipaddress=None):
+class HostsManager:
+    def __init__(self, user_id=None, ipaddress=None, hostname=None):
         self.user_id = user_id
         self.ipaddress = ipaddress
+        self.hostname = hostname
         self.get_hosts()
 
     def get_hosts(self):
         try:
             if self.user_id is not None and self.ipaddress is not None:
                 self.hosts = AnsibleHosts.query.filter_by(user_id=self.user_id, ipaddress=self.ipaddress).all()
+            elif self.user_id is not None and self.hostname is not None:
+                self.hosts = AnsibleHosts.query.filter_by(user_id=self.user_id, hostname=self.hostname).all()
             elif self.user_id is not None:
                 self.hosts = AnsibleHosts.query.filter_by(user_id=self.user_id).all()
             else:

@@ -8,8 +8,9 @@ from easyops.utils import utils
 from flask import (
     flash, redirect, render_template, url_for, request, session)
 
+from easyops import csrf
 from easyops.libs.ansible.api import Task
-from easyops.models.models import AnsibleHosts 
+from easyops.controller.hosts.hosts import HostsManager
 from easyops.api_v1_0 import api
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -17,18 +18,11 @@ host_cfg = os.path.join(os.path.dirname(BASE_DIR), "inventory.py")
 
 runner = Task(inventory=host_cfg)
 
-@api.route("/overview", methods=["GET"])
-def overview():
-    user_id = session.get("user_id")
-    if user_id is not None:
-        return render_template("overview/overview.html")
-    else:
-        return redirect(url_for("api_v1_0.login"))
-
-
+@csrf.exempt
 @api.route("/execute", methods=["GET", "POST"])
 def execute():
     user_id = session.get("user_id")
+    host = HostsManager(user_id=user_id)
     if request.method == "POST":
         form = request.form
         execute_info = form.to_dict()
@@ -47,10 +41,10 @@ def execute():
         else:
             flash("Not found some args.")
             return render_template("execute/_results.html")
-    else:
-        remote_hosts = AnsibleHosts.query.filter_by(user_id=user_id).all()
-        return render_template("execute/remote.html", remote_hosts=remote_hosts)
 
+    return render_template("execute/remote.html", remote_hosts=host.hosts)
+
+@csrf.exempt
 @api.route("/execute/host_details", methods=["GET", "POST"])
 def execute_host_details():
     if request.method == "POST":

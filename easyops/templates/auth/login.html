@@ -41,9 +41,6 @@
       <span style="float: right; color: red">{{ msg }}</span>
       {% endfor %} {% endif %}
       <input id="login_btn" type="submit" value="登录" />
-      <span style="float: left; color: gray; padding-top: 8px">
-        <a style="color: gray" href='{{ url_for("api_v1_0.resetpassword") }}'>忘记密码?</a>
-      </span>
       <span style="float: right; color: gray; padding-top: 8px">
         <a style="color: gray" href='{{ url_for("api_v1_0.register") }}'>还没有账号？免费注册</a>
       </span>

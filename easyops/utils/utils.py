@@ -52,6 +52,19 @@ def setup_logging(log_path="/var/log/easyops/easyops.log",
             level=log_level,
             filename=log_file)
 
+def sort_directory_list(a, b):
+
+    if a['is_dir'] != b['is_dir']:
+        if a['is_dir']:
+            return -1
+        else:
+            return 1
+    if a['name'] > b['name']:
+        return 1
+    elif a['name'] < b['name']:
+        return -1
+    return 0
+
 def insertServersFromExcel(excelPath):
     hosts = {}
     book = xlrd.open_workbook(excelPath)
