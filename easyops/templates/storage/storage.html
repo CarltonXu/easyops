@@ -9,6 +9,7 @@
         data-toggle="modal">
         <span>添加存储</span>
       </button>
+      <button type="button" id="update_storage" class="btn btn-warning" disabled="disabled">更新</button>
       <button type="button" id="delete_storage" class="btn btn-danger" disabled="disabled">删除</button>
     </div>
     <div
@@ -19,6 +20,16 @@
       aria-hidden="true">
       <div class="modal-dialog" style="width: 800px">
         <div class="modal-content">{% include "storage/_add_storage.html" %}</div>
+      </div>
+    </div>
+    <div
+      class="modal fade"
+      id="modal-container-update-storage"
+      role="dialog"
+      aria-labelledby="myModalLabel"
+      aria-hidden="true">
+      <div class="modal-dialog" style="width: 800px">
+        <div class="modal-content">{% include "storage/_update_storage.html" %}</div>
       </div>
     </div>
   </div>

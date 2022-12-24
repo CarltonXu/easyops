@@ -25,28 +25,22 @@ class StoragesManager:
 
 
     def create_storage(self, **kwargs):
+        result = {
+            "success": [],
+            "fail": [] 
+        }
         try:
-            self.storage = Storages(
-                name=kwargs["name"],
-                type=kwargs["type"],
-                provider=kwargs["provider"],
-                region=kwargs["region"],
-                access_key_id=kwargs["access_key_id"],
-                secret_access_key=kwargs["secret_access_key"],
-                endpoint=kwargs["endpoint"],
-                acl=kwargs["acl"],
-                storclass=kwargs["storclass"],
-                upload_cutoff=kwargs["upload_cutoff"],
-                chunk_size=kwargs["chunk_size"],
-                upload_checksum=kwargs["upload_checksum"],
-                user_id=kwargs["user_id"]
-                )
-
-            db.session.add(self.storage)
-            db.session.commit()
+            if not self.exists_storage():
+                # 更新存储属性
+                storage = Storages(**kwargs)
+                db.session.add(storage)
+                db.session.commit()
+                result["success"] = storage
+            else:
+                result["fail"] = kwargs.name
         except Exception as err:
             logging.error(err)
-        return self.storage
+        return result
 
     def exists_storage(self):
         try:
@@ -69,6 +63,52 @@ class StoragesManager:
             if self.exists_storage():
                 db.session.delete(self.exist_storage)
                 db.session.commit()
+            msg = None
         except Exception as err:
             logging.error(err)
-        return {"code": 0}
+            msg = err
+        return {"code": 0, "msg": msg }
+
+
+    def update_storage(self, **kwargs):
+
+        result = {
+            "success": [],
+            "fail": []
+        }
+
+        try:
+            if self.exists_storage():
+                # 定义存储属性和数据库字段的映射
+                mapping = self.get_mapping()
+                # 更新存储属性
+                for k, v in kwargs.items():
+                    if k in mapping:
+                        setattr(self.exist_storage, mapping[k], v)
+
+                # 提交到数据库
+                db.session.commit()
+                result["success"].append(kwargs.name)
+            else:
+                result["fail"].append(kwargs.name)
+        except Exception as err:
+            logging.error(err)
+        return result
+    
+    def get_mapping(self):
+        # 定义存储属性和数据库字段的映射函数,可以作为公共调用,更新等操作时
+        return {
+            "name": "name",
+            "type": "type",
+            "provider": "provider",
+            "region": "region",
+            "access_key_id": "access_key_id",
+            "secret_access_key": "secret_access_key",
+            "endpoint": "endpoint",
+            "acl": "acl",
+            "storclass": "storclass",
+            "upload_cutoff": "upload_cutoff",
+            "chunk_size": "chunk_size",
+            "upload_checksum": "upload_checksum",
+            "user_id": self.user_id
+        }

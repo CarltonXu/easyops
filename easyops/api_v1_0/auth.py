@@ -69,8 +69,10 @@ def login():
 
 @api.route("/logout", methods=["GET", "POST"])
 def logout():
-    user = UsersManager(user_id=session.get("user_id"))
-    user.set_user_login_state(False)
+    print(session)
+    if session.get("user_id") is not None:
+        user = UsersManager(user_id=session.get("user_id"))
+        user.set_user_login_state(False)
     session.clear()
     return redirect(url_for("api_v1_0.login"))
 

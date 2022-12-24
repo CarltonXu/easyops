@@ -41,10 +41,13 @@
       var check_num = $("tbody td:first-child input").filter(":checked").length;
       if (check_num > 1) {
         $("#delete_storage").attr("disabled", false);
+        $("#update_storage").attr("disabled", true);
       } else if (check_num <= 0) {
         $("#delete_storage").attr("disabled", true);
+        $("#update_storage").attr("disabled", true);
         $("#select_all_storages").attr("checked", false);
       } else if (check_num == 1) {
+        $("#update_storage").attr("disabled", false);
         $("#delete_storage").attr("disabled", false);
       }
     };
@@ -246,6 +249,88 @@
           },
         });
       }
+    });
+
+    function getSelectedStorage() {
+      // 获取页面上所有被选中的复选框
+      var selectedCheckboxes = document.querySelectorAll("table input[type=checkbox]:checked");
+
+      // 如果没有被选中的复送框，返回 null
+      if (selectedCheckboxes.length === 0) {
+        return null;
+      }
+
+      // 存储所有选中的存储的信息
+      var selectedStorages = [];
+
+      // 遍历所有被选中的复选框
+      for (var i = 0; i < selectedCheckboxes.length; i++) {
+        // 获取复选框所在行
+        var selectedRow = selectedCheckboxes[i].closest("tr");
+
+        // 获取行中各个单元格中的值，并封装到一个对象中
+        var storage = {
+          name: selectedRow.cells[1].innerText,
+          type: selectedRow.cells[2].innerText,
+          provider: selectedRow.cells[3].innerText,
+          access_key_id: selectedRow.cells[4].innerText,
+          endpoint: selectedRow.cells[5].innerText,
+          acl: selectedRow.cells[6].innerText,
+          create_time: selectedRow.cells[7].innerText,
+        };
+
+        // 将该存储的信息添加到存储数组中
+        selectedStorages.push(storage);
+      }
+
+      // 返回所有选中的存储的信息
+      return selectedStorages;
+    }
+
+    // 监听更新存储按钮的点击事件
+    $("#update_storage").on("click", function () {
+      // 获取当前选中的存储信息
+      var selected_storage = getSelectedStorage();
+      if (!selected_storage) {
+        return;
+      }
+
+      // 将当前选中的存储信息填入更新存储的表单中
+      $("#modal-container-update-storage #name").val(selected_storage.name);
+      $("#modal-container-update-storage #type").val(selected_storage.type);
+      $("#modal-container-update-storage #provider").val(selected_storage.provider);
+      $("#modal-container-update-storage #access_key_id").val(selected_storage.access_key_id);
+      $("#modal-container-update-storage #endpoint").val(selected_storage.endpoint);
+      $("#modal-container-update-storage #acl").val(selected_storage.acl);
+
+      // 打开更新存储的模态框
+      $("#modal-container-update-storage").modal("show");
+    });
+
+    // 监听更新存储表单的提交事件
+    $("#modal-container-update-storage form").submit(function (event) {
+      event.preventDefault();
+
+      // 获取表单中的存储信息
+      var storage_info = {
+        name: $("#modal-container-update-storage #name").val(),
+        type: $("#modal-container-update-storage #type").val(),
+        provider: $("#modal-container-update-storage #provider").val(),
+        access_key_id: $("#modal-container-update-storage #access_key_id").val(),
+        endpoint: $("#modal-container-update-storage #endpoint").val(),
+        acl: $("#modal-container-update-storage #acl").val(),
+      };
+
+      // 调用更新存储的接口，更新存储信息
+      updateStorage(storage_info, function (result) {
+        if (result.success) {
+          // 更新成功，刷新页面
+          location.reload();
+        } else {
+          // 更新失败，显示错误信息
+          alert(result.message);
+        }
+      });
     });
   });
 })(jQuery);

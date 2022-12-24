@@ -51,6 +51,13 @@ class DataSyncManager(StoragesManager, HostsManager):
         self.sftp_cfg_path = os.environ["HOME"] + "/.config/rclone/rclone.conf"
         self.host_cfg = host_cfg
         self.chunk_size = 1000000
+    
+    def check_storage_exists(self):
+        for s in self.storages:
+            if self.remote_name == s.name:
+                return self.remote_name
+
+        return False
 
     def get_all_datasync_remotes(self):
         return self.storages, self.hosts
@@ -176,7 +183,7 @@ class DataSyncManager(StoragesManager, HostsManager):
         else:
             remote_data = self.get_storages()
             if remote_data is not None:
-                return self.obj_cfg.format(**remote_data.__dict__)
+                return self.obj_cfg.format(**remote_data[0].__dict__)
     
     
     def is_directory(self):

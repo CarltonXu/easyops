@@ -90,10 +90,34 @@ def delete_storage():
     for stor_name in storages:
         try:
             storage = StoragesManager(user_id=user_id, storage_name=stor_name)
-            if storage.delete_storage()["code"] == 0:
+            result = storage.delete_storage()
+            if result["code"] == 0:
                 logging.debug("Delete %s storage successful." % stor_name)
+            else:
+                logging.error(result["msg"])
         except Exception as err:
             logging.error(err)
             response = make_response("操作数据库删除主机失败", 500)
             return response
         return redirect(url_for("api_v1_0.storage_manage"))
+
+@csrf.exempt
+@api.route("/storage/update", methods=["POST"])
+def update_storage():
+    form = request.form
+    user_id = session.get("user_id")
+    stor_name = form.get("storage_name")
+    new_name = form.get("new_storage_name")
+
+    try:
+        storage = StoragesManager(user_id=user_id, storage_name=stor_name)
+        result = storage.update_storage(new_name)
+        if result["code"] == 0:
+            logging.debug("Update %s storage successful." % stor_name)
+        else:
+            logging.error(result["msg"])
+    except Exception as err:
+        logging.error(err)
+        response = make_response("操作数据库更新存储失败", 500)
+        return response
+    return redirect(url_for("api_v1_0.storage_manage"))
