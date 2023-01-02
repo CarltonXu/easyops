@@ -98,7 +98,7 @@ def register():
 
             if errormsg is None:
                 register_time = datetime.datetime.now()
-                avatar = "/static/img/avatar.jpeg"
+                avatar = "/static/img/avatar/avatar.jpeg"
                 user.create_user(username, password, register_time, avatar)
 
                 return redirect(url_for("api_v1_0.login"))

@@ -62,7 +62,9 @@ class HostsManager:
 
         return self.ipaddress
 
-    def check_host_exists(self):
+    def check_host_exists(self, ipaddress):
+        if ipaddress:
+            self.ipaddress = ipaddress
         for host in self.hosts:
             if self.ipaddress != host.ipaddress:
                 continue

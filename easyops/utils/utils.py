@@ -2,8 +2,10 @@
 # coding: utf-8
 
 import os
+import time
 import logging
 import re
+import psutil
 import xlrd
 
 def check_ip(ipAddr):
@@ -181,3 +183,61 @@ def get_host_details(ip, exec_rets):
     data['os_uptime_hours'] = os_uptime_hours
 
     return data
+
+def get_local_usages():
+    # 获取cpu占用率（百分比）
+    cpu_percent = psutil.cpu_percent()
+    # 获取CPU负载（1、5、15分钟的平均负载）
+    cpu_load_avg = psutil.getloadavg()
+    # 获取内存占用信息
+    memory = psutil.virtual_memory()
+    # 内存总量（单位：字节）
+    memory_total = memory.total
+    # 已使用内存量（单位：字节）
+    memory_used = memory.used
+    # 内存占用率（百分比）
+    memory_percent = memory.percent
+
+    cpu_load_avg = f"{cpu_load_avg[0]:.2f}, {cpu_load_avg[1]:.2f}, {cpu_load_avg[2]:.2f}"
+
+    return {
+        "cpu": {
+            "percent": cpu_percent,
+            "load_avg": cpu_load_avg,
+        },
+        "memory": {
+            "total": int(memory_total / 1000 / 1000 / 1000),
+            "used": int(memory_used),
+            "percent": memory_percent
+        }
+    }
+
+def get_network_speed():
+    net_devices, first_recv, first_sent = get_network_devices()
+    time.sleep(1)
+    net_devices, second_recv, second_sent = get_network_devices()
+
+    data = []
+    for device in net_devices:
+        data.append({
+            "name": device,
+            "rx_rate": float('%.2f' %((second_recv.get(device) - first_recv.get(device)) / 1000)),
+            "tx_rate": float('%.2f' %((second_sent.get(device) - first_sent.get(device)) / 1000)) 
+        })
+    
+    return data
+
+def get_network_devices():
+    net_devices = psutil.net_io_counters(pernic=True)
+    devices = []
+    recv = {}
+    sent = {}
+
+    for device, info in net_devices.items():
+        if device[:2] not in ["en", "et", "pp"]:
+            continue
+        devices.append(device)
+        recv.setdefault(device, info.bytes_recv)
+        sent.setdefault(device, info.bytes_sent)
+
+    return devices, recv, sent

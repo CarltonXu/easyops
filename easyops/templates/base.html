@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/lib/toastr.min.css') }}" />
     <link rel="stylesheet" href="{{ url_for('static', filename='css/lib/fileinput.min.css') }}" />
     <link rel="stylesheet" href="{{ url_for('static', filename='css/lib/progress-step.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/overview.css') }}" />
     <link rel="stylesheet" href="{{ url_for('static', filename='css/easyops.css') }}" />
     <link rel="stylesheet" href="{{ url_for('static', filename='css/user.css') }}" />
     <link rel="stylesheet" href="{{ url_for('static', filename='css/auth.css') }}" />
@@ -27,7 +28,8 @@
     <script type="text/javascript" src="{{ url_for('static', filename='js/user.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='js/sidebar_button.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='js/auth.js') }}"></script>
-    <script type="text/javascript" src="http://pv.sohu.com/cityjson?ie=utf-8"></script>
+    <script type="text/javascript" src="https://fastly.jsdelivr.net/npm/echarts@5.4.0/dist/echarts.min.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
   </head>
   <body>
     {% block lgmenu %} {% endblock %} {% block navpage %} {% block content %}{% endblock %} {% endblock %}

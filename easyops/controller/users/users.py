@@ -1,6 +1,8 @@
 import logging
 import json
 
+from sqlalchemy.sql import func
+
 from easyops import db
 from easyops.models.models import Users, UsersLoginHistory
 
@@ -173,6 +175,35 @@ class UsersManager():
             "errormsg": errormsg,
             "user_history": users_login_info
         }
+
+    def get_user_login_history_count(self):
+        errormsg = None
+        try:
+            users_login_info_by_region_dict = dict(UsersLoginHistory.query.filter_by(
+                user_id=self.user_id).group_by(UsersLoginHistory.login_region).with_entities(
+                    UsersLoginHistory.login_region, func.count()
+                ))
+        except Exception as err:
+            errormsg = "操作数据库失败，请检查数据库."
+            res_code = 3001
+        else:
+            res_code = 1005
+
+        if res_code == 3001:
+            return {
+                "response_code": res_code,
+                "errormsg": errormsg,
+            }
+        else:
+            results = []
+            for login_region, count in users_login_info_by_region_dict.items():
+                results.append({"name": login_region, "value": count})
+
+            return {
+                "res_code": res_code,
+                "errormsg": errormsg,
+                "user_login_info": results
+            }
     
     def get_user_last_login_history(self):
         errormsg = None

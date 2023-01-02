@@ -76,6 +76,8 @@ def add_host_from_excel():
         return "Save upload file {} failed.".format(upload_filename)
     batch_hosts = utils.insertServersFromExcel(save_filepath)
     host = HostsManager(user_id=user_id)
+    import pdb
+    pdb.set_trace()
     for k, v in batch_hosts.items():
         if not host.check_host_exists(ipaddress=v[1]):
             host_params = {
