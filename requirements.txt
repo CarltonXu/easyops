@@ -1,7 +1,7 @@
 humanfriendly==10.0
 requests==2.27.1
 sarge==0.1.7
-flask==0.12.5
+flask==1.0
 Jinja2==3.0.1
 flask-sqlalchemy==2.5.1
 flask-migrate==2.5.3
