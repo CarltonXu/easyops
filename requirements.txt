@@ -15,6 +15,7 @@ ansible==2.9.15
 itsdangerous==1.1.0
 SQLAlchemy==1.3.24
 xlrd==1.2.0
+psutil==5.9.1
 paramiko==2.7.0
 cryptography==2.5
 redis==3.5.3

@@ -15,13 +15,10 @@ from easyops.controller.hosts.hosts import HostsManager
 from easyops.controller.storages.storages import StoragesManager
 from easyops.controller.users.users import UsersManager
 
-import psutil
 import functools
 
 from flask import session, redirect, url_for, g, render_template, jsonify
 
-
-from easyops.models.models import Users
 from easyops.controller.users.users import UsersManager
 
 from . import api

@@ -4,47 +4,49 @@
   </div>
   <div class="col-sm-12" style="margin-top: 30px">
     <div class="resources-total-container">
-      <span>管理资源展示</span>
       <div class="resource-statistics-area">
-        <div class="manager-hosts">
-          <h4>主机</h4>
-          <p>主机数量: <span id="hosts-total">{{ hosts_num }}</span></p>
+        <div class="resource-items">
+          <div class="manager-hosts">
+            <h4>主机</h4>
+            <p>主机数量: <span id="hosts-total">{{ hosts_num }}</span></p>
+          </div>
+          <div class="manager-storages">
+            <h4>存储</h4>
+            <p>管理存储数量: <span id="storage-total">{{ storages_num }}</span></p>
+          </div>
         </div>
-        <div class="manager-storages">
-          <h4>存储</h4>
-          <p>管理存储数量: <span id="storage-total">{{ storages_num }}</span></p>
+        <div class="resource-monitor-items">
+          <div class="cpu-rate">
+            <h4>CPU利用率</h4>
+            <span id="cpu-rate-percent" style="font-size: 18px">{{ usages.cpu.percent }}%</span>
+          </div>
+          <div class="cpu-load">
+            <h4>CPU负载</h4>
+            <span id="cpu-load-avg" style="font-size: 18px">
+              1分钟: {{ usages.cpu.load_avg.split(",")[0] }}, 5分钟:{{ usages.cpu.load_avg.split(",")[1] }}, 15分钟: {{
+              usages.cpu.load_avg.split(",")[2] }}
+            </span>
+          </div>
+          <div class="mem-rate">
+            <h4>内存使用率</h4>
+            <span id="mem-rate-percent" style="font-size: 18px">
+              总内存: {{ usages.memory.total }}GB, 已使用: {{ usages.memory.percent }}%
+            </span>
+          </div>
         </div>
       </div>
     </div>
-    <div class="services-monitor-container" style="height: 30vh">
-      <span>资源占用</span>
-      <div class="resource-statistics-area">
-        <div class="cpu-rate">
-          <h4>CPU利用率</h4>
-          <span id="cpu-rate-percent" style="font-size: 18px">{{ usages.cpu.percent }}%</span>
-        </div>
-        <div class="cpu-load">
-          <h4>CPU负载</h4>
-          <span id="cpu-load-avg" style="font-size: 18px">
-            1分钟: {{ usages.cpu.load_avg.split(",")[0] }}, 5分钟:{{ usages.cpu.load_avg.split(",")[1] }}, 15分钟: {{
-            usages.cpu.load_avg.split(",")[2] }}
-          </span>
-        </div>
-        <div class="mem-rate">
-          <h4>内存使用率</h4>
-          <span id="mem-rate-percent" style="font-size: 18px">
-            总内存: {{ usages.memory.total }}GB, 已使用: {{ usages.memory.percent }}%
-          </span>
-        </div>
-      </div>
-      <div class="resources-monitor-btn">
+    <div class="services-monitor-container">
+      <div class="resources-monitor-btn" style="float: right; margin: 15px 0px 15px 0px">
         <button class="btn btn-success" id="open_usage_monitor">开启实时监控</button>
-        <button class="btn btn-default" id="close_usage_monitor">关闭实时监控</button>
+        <button class="btn btn-primary" id="close_usage_monitor">关闭实时监控</button>
       </div>
       <div class="resources-monitor-container">
-        <div style="width: 33%; height: 100%" id="cpu_memory_usage"></div>
-        <div style="width: 33%; height: 100%" id="network_speed"></div>
         <div style="width: 33%; height: 100%" id="access_address_source"></div>
+        <div style="width: 33%; height: 100%" id="cpu_memory_usage"></div>
+        <div style="width: 33%; height: 100%" id="cpu_avg_usage"></div>
+        <div style="width: 49.8%; height: 100%" id="network_speed_rx"></div>
+        <div style="width: 49.8%; height: 100%" id="network_speed_tx"></div>
       </div>
     </div>
   </div>

@@ -68,6 +68,12 @@
             }
           },
         },
+        toolbox: {
+          feature: {
+            saveAsImage: {},
+            restore: {},
+          },
+        },
         visualMap: {
           min: 0,
           max: 100,
@@ -117,25 +123,43 @@
   });
 })(jQuery);
 
-// 获取容器元素
+// 获取cpu使用率容器元素
 var cpuChart = document.getElementById("cpu_memory_usage");
 
-// 获取容器元素
-var networkChart = document.getElementById("network_speed");
+// 获取cpu负载容器元素
+var cpuLoadChart = document.getElementById("cpu_avg_usage");
 
-// 初始化折线图
+// 获取网络下载容器元素
+var networkRXChart = document.getElementById("network_speed_rx");
+
+// 获取网络上传容器元素
+var networkTXChart = document.getElementById("network_speed_tx");
+
+// 初始化cpu使用率折线图
 var myChart = echarts.init(cpuChart, "dark", {
   renderer: "canvas",
   useDirtyRect: false,
 });
 
-// 初始化折线图
-var netChart = echarts.init(networkChart, "dark", {
+// 初始化cpu负载折线图
+var cpuLoadAvgChart = echarts.init(cpuLoadChart, "dark", {
   renderer: "canvas",
   useDirtyRect: false,
 });
 
-// 定义折线图配置项
+// 初始化下载网络折线图
+var netRXChart = echarts.init(networkRXChart, "dark", {
+  renderer: "canvas",
+  useDirtyRect: false,
+});
+
+// 初始化上传网络折线图
+var netTXChart = echarts.init(networkTXChart, "dark", {
+  renderer: "canvas",
+  useDirtyRect: false,
+});
+
+// 定义cpu内存折线图配置项
 var option = {
   title: {
     text: "cpu/内存资源监控图",
@@ -162,10 +186,11 @@ var option = {
   },
   toolbox: {
     feature: {
-      dataZoom: {
-        show: true,
-      },
       saveAsImage: {},
+      magicType: {
+        show: true,
+        type: ["line", "bar", "stack"],
+      },
     },
   },
   xAxis: {
@@ -261,10 +286,169 @@ var option = {
   ],
 };
 
-// 定义网络折线图配置项
-var netOption = {
+// 定义cpu负载折线图配置项
+var cpuLoadAvgOption = {
   title: {
-    text: "网络资源监控图",
+    text: "CPU负载使用率",
+  },
+  tooltip: {
+    show: true,
+    trigger: "axis",
+    axisPointer: {
+      type: "cross",
+      label: {
+        backgroundColor: "#6a7985",
+      },
+    },
+    valueFormatter: (value) => value.toFixed(2) + "%",
+  },
+  legend: {
+    data: ["1分钟负载", "5分钟负载", "15分钟负载"],
+  },
+  grid: {
+    left: "3%",
+    right: "4%",
+    bottom: "3%",
+    containLabel: true,
+  },
+  toolbox: {
+    feature: {
+      saveAsImage: {},
+      magicType: {
+        show: true,
+        type: ["line", "bar", "stack"],
+      },
+    },
+  },
+  xAxis: {
+    type: "category",
+    boundaryGap: false,
+    data: [],
+  },
+  yAxis: {
+    type: "value",
+  },
+  dataZoom: [
+    {
+      show: true,
+      type: "slider",
+      xAxisIndex: [0],
+      start: 80,
+      end: 100,
+      backgroundColor: "transparent",
+    },
+    {
+      show: true,
+      type: "inside",
+      xAxisIndex: [0],
+      start: 80,
+      end: 100,
+    },
+  ],
+  series: [
+    {
+      name: "1分钟负载",
+      data: [],
+      type: "line",
+      stack: "x",
+      areaStyle: {},
+      smooth: true,
+      markPoint: true, //标记极值
+      label: {
+        show: false,
+        position: "top",
+        formatter: function (params) {
+          return params.value;
+        },
+        textStyle: {
+          fontSize: 12,
+          fontWeight: "gray",
+        },
+      },
+      emphasis: {
+        scale: true,
+        focus: "series",
+        itemStyle: {
+          normal: {
+            show: false,
+          },
+        },
+        label: {
+          show: true,
+        },
+      },
+    },
+    {
+      name: "5分钟负载",
+      data: [],
+      type: "line",
+      stack: "x",
+      areaStyle: {},
+      smooth: true,
+      markPoint: true, //标记极值
+      label: {
+        show: false,
+        position: "top",
+        formatter: function (params) {
+          return params.value;
+        },
+        textStyle: {
+          fontSize: 12,
+          fontWeight: "gray",
+        },
+      },
+      emphasis: {
+        scale: true,
+        focus: "series",
+        itemStyle: {
+          normal: {
+            show: false,
+          },
+        },
+        label: {
+          show: true,
+        },
+      },
+    },
+    {
+      name: "15分钟负载",
+      data: [],
+      type: "line",
+      stack: "x",
+      areaStyle: {},
+      smooth: true,
+      markPoint: true, //标记极值
+      label: {
+        show: false,
+        position: "top",
+        formatter: function (params) {
+          return params.value;
+        },
+        textStyle: {
+          fontSize: 12,
+          fontWeight: "gray",
+        },
+      },
+      emphasis: {
+        scale: true,
+        focus: "series",
+        itemStyle: {
+          normal: {
+            show: false,
+          },
+        },
+        label: {
+          show: true,
+        },
+      },
+    },
+  ],
+};
+
+// 定义网络折线图配置项
+var netRXOption = {
+  title: {
+    text: "网络资源监控图(下载)",
   },
   tooltip: {
     show: true,
@@ -295,6 +479,78 @@ var netOption = {
   toolbox: {
     feature: {
       saveAsImage: {},
+      magicType: {
+        show: true,
+        type: ["line", "bar", "stack"],
+      },
+    },
+  },
+  xAxis: {
+    type: "category",
+    boundaryGap: false,
+    data: [],
+  },
+  yAxis: {
+    name: "",
+    type: "value",
+  },
+  dataZoom: [
+    {
+      show: true,
+      type: "slider",
+      xAxisIndex: [0],
+      start: 80,
+      end: 100,
+    },
+    {
+      show: true,
+      type: "inside",
+      xAxisIndex: [0],
+      start: 80,
+      end: 100,
+    },
+  ],
+  series: [],
+};
+
+// 定义网络折线图配置项
+var netTXOption = {
+  title: {
+    text: "网络资源监控图(上传)",
+  },
+  tooltip: {
+    show: true,
+    trigger: "axis",
+    axisPointer: {
+      type: "cross",
+      label: {
+        backgroundColor: "#6a7985",
+      },
+    },
+    valueFormatter: function (value) {
+      if (value > 1000) {
+        return (value / 1000).toFixed(1) + " MB/s";
+      } else {
+        return value + " KB/s";
+      }
+    },
+  },
+  legend: {
+    data: [],
+  },
+  grid: {
+    left: "3%",
+    right: "4%",
+    bottom: "3%",
+    containLabel: true,
+  },
+  toolbox: {
+    feature: {
+      saveAsImage: {},
+      magicType: {
+        show: true,
+        type: ["line", "bar", "stack"],
+      },
     },
   },
   xAxis: {
@@ -328,15 +584,30 @@ var netOption = {
 if (option && typeof option === "object") {
   myChart.setOption(option);
 }
-if (netOption && typeof netOption === "object") {
-  netChart.setOption(netOption);
+
+if (cpuLoadAvgOption && typeof cpuLoadAvgOption === "object") {
+  cpuLoadAvgChart.setOption(cpuLoadAvgOption);
+}
+
+if (netRXOption && typeof netRXOption === "object") {
+  netRXChart.setOption(netRXOption);
+}
+
+if (netTXOption && typeof netTXOption === "object") {
+  netTXChart.setOption(netTXOption);
 }
 
 // 监听图标容器大小，并改变图标大小
 window.addEventListener("resize", myChart.resize);
 
 // 监听图标容器大小，并改变图标大小
-window.addEventListener("resize", netChart.resize);
+window.addEventListener("resize", cpuLoadAvgChart.resize);
+
+// 监听图标容器大小，并改变图标大小
+window.addEventListener("resize", netRXChart.resize);
+
+// 监听图标容器大小，并改变图标大小
+window.addEventListener("resize", netTXChart.resize);
 
 //格式化当前时间
 function formatCurrentDate() {
@@ -360,10 +631,30 @@ function getData() {
   // 使用网络请求库访问后台接口，获取CPU的资源使用率
   axios.get("/api/v1.0/resources/usages").then(function (response) {
     usages_data = response.data;
+
+    // 更新cpu、内存资源使用率图表时间(x轴显示的时间)
     option.xAxis.data.push(formatCurrentDate());
+
+    // 更新cpu、内存资源使用率图表数据
     option.series[0].data.push(usages_data.cpu.percent);
+    // 更新内存资源使用率图表数据
     option.series[1].data.push(usages_data.memory.percent);
+
+    // 更新cpu负载使用率图表时间(x轴显示的时间)
+    cpuLoadAvgOption.xAxis.data.push(formatCurrentDate());
+
+    // 更新cpu负载使用率图表数据(y轴显示的数据 1分钟负载)
+    cpuLoadAvgOption.series[0].data.push(parseFloat(usages_data.cpu.load_avg.split(", ")[0]));
+    // 更新cpu负载使用率图表数据(y轴显示的数据 10分钟负载)
+    cpuLoadAvgOption.series[1].data.push(parseFloat(usages_data.cpu.load_avg.split(", ")[1]));
+    // 更新cpu负载使用率图表数据(y轴显示的数据 15分钟负载)
+    cpuLoadAvgOption.series[2].data.push(parseFloat(usages_data.cpu.load_avg.split(", ")[2]));
+
+    // 将数据渲染到图表
     myChart.setOption(option);
+
+    // 将数据渲染到图表
+    cpuLoadAvgChart.setOption(cpuLoadAvgOption);
   });
 }
 
@@ -389,11 +680,14 @@ function getNetworkData() {
   // 使用网络请求库访问后台接口，获取CPU的资源使用率
   axios.get("/api/v1.0/resources/network_speed").then(function (response) {
     var data = response.data;
-    netOption.xAxis.data.push(formatCurrentDate());
-    if (netOption.series.length == 0) {
+    netRXOption.xAxis.data.push(formatCurrentDate());
+    netTXOption.xAxis.data.push(formatCurrentDate());
+    if (netRXOption.series.length == 0) {
       for (var n = 0; n < data.length; n++) {
-        netOption.legend.data.push(data[n].name);
-        netOption.series.push({
+        netRXOption.legend.data.push(data[n].name);
+        netTXOption.legend.data.push(data[n].name);
+
+        netRXOption.series.push({
           name: data[n].name,
           data: [data[n].rx_rate],
           type: "line",
@@ -425,18 +719,64 @@ function getNetworkData() {
             },
           },
         });
+
+        netTXOption.series.push({
+          name: data[n].name,
+          data: [data[n].tx_rate],
+          type: "line",
+          stack: "x",
+          areaStyle: {},
+          smooth: true,
+          markPoint: true, //标记极值
+          label: {
+            show: false,
+            position: "top",
+            formatter: function (params) {
+              return params.value;
+            },
+            textStyle: {
+              fontSize: 12,
+              fontWeight: "gray",
+            },
+          },
+          emphasis: {
+            scale: true,
+            focus: "series",
+            itemStyle: {
+              normal: {
+                show: false,
+              },
+            },
+            label: {
+              show: true,
+            },
+          },
+        });
       }
-      netChart.setOption(netOption);
+
+      netRXChart.setOption(netRXOption);
+      netTXChart.setOption(netTXOption);
     }
+
     // 更新series.data数据
-    for (var i = 0; i < netOption.series.length; i++) {
+    for (var i = 0; i < netRXOption.series.length; i++) {
       for (var n = 0; n < data.length; n++) {
-        if (data[n].name == netOption.series[i].name) {
-          netOption.series[i].data.push(data[n].rx_rate); // push最新的data数据
+        if (data[n].name == netRXOption.series[i].name) {
+          netRXOption.series[i].data.push(data[n].rx_rate); // push最新的data数据
         }
       }
     }
-    netChart.setOption(netOption);
+
+    // 更新series.data数据
+    for (var i = 0; i < netTXOption.series.length; i++) {
+      for (var n = 0; n < data.length; n++) {
+        if (data[n].name == netTXOption.series[i].name) {
+          netTXOption.series[i].data.push(data[n].tx_rate); // push最新的data数据
+        }
+      }
+    }
+    netRXChart.setOption(netRXOption);
+    netTXChart.setOption(netTXOption);
   });
 }
 
