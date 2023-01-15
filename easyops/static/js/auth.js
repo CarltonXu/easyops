@@ -1,9 +1,5 @@
 (function ($) {
   $(document).ready(function () {
-    function sleep(time) {
-      return new Promise((resolve) => setTimeout(resolve, time));
-    }
-
     if ($.cookie("username") != null) {
       //往input#username填入存到cookie中username的值
       $("#username").val($.cookie("username"));
@@ -67,6 +63,7 @@
       }
     });
 
+    var login_info = {};
     // 设置登录的来源IP地址信息
     $.ajax({
       type: "GET",
@@ -74,7 +71,12 @@
       data: "",
       success: function (data) {
         $("#login_ipaddress").val(data.data[0].ip);
-        $("#login_region").val(data.data[0].city);
+        login_info["nation"] = data.data[0].nation;
+        login_info["province"] = data.data[0].province;
+        login_info["city"] = data.data[0].city;
+        login_info["district"] = data.data[0].district;
+        var json_login_info = JSON.stringify(login_info);
+        $("#login_region").val(json_login_info);
       },
       error: function (data) {
         console.log("Error: " + data);

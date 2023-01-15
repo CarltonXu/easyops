@@ -19,5 +19,6 @@
     $("#user-manage-nav").on("click", function () {
       $("#user").click();
     });
+    $("#overview").click();
   });
 })(jQuery);

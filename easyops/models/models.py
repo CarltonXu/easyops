@@ -95,5 +95,5 @@ class UsersLoginHistory(BaseModel,db.Model):
     user_id = db.Column(db.ForeignKey("users.id"), comment="用户id")
     login_time = db.Column(db.DateTime, default=datetime.now, comment="上次登录时间")
     login_ipaddress = db.Column(db.String(30), comment="登录ip")
-    login_region = db.Column(db.String(30), comment="登录地址")
+    login_region = db.Column(db.String(128), comment="登录地址")
     user = db.relationship("Users", uselist=False, backref=backref("users_login_history", uselist=True))

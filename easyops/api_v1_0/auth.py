@@ -4,6 +4,7 @@
 import functools
 import logging
 import datetime
+import json
 
 from io import BytesIO
 
@@ -36,7 +37,7 @@ def login():
             password = request.form["password"]
             verify_code_string = request.form["verify_code"].lower()
             login_ipaddress = request.form["login_ipaddress"]
-            login_region = request.form["login_region"]
+            login_region = json.loads(request.form["login_region"])["province"]
             user = UsersManager(username=username)
             resp_user_info = user.check_user_exsits()
             remember_me = request.form.get("remember")
