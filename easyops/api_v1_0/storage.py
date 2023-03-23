@@ -99,7 +99,7 @@ def delete_storage():
             logging.error(err)
             response = make_response("操作数据库删除主机失败", 500)
             return response
-        return redirect(url_for("api_v1_0.storage_manage"))
+    return redirect(url_for("api_v1_0.storage_manage"))
 
 @csrf.exempt
 @api.route("/storage/update", methods=["POST"])

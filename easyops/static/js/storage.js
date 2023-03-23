@@ -235,7 +235,8 @@
       for (var n = 0; n < obj_parents.length; n++) {
         selectdata[n] = obj_parents[n].siblings()[0].innerHTML;
       }
-      if (confirm(`是否确定删除[${selectdata[0]}]存储?`)) {
+      console.log(selectdata);
+      if (confirm(`是否确定删除[${Object.values(selectdata)}]存储?`)) {
         $.ajax({
           type: "POST",
           url: "/api/v1.0/storage/delete",
