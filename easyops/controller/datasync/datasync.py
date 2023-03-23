@@ -26,8 +26,12 @@ class DataSyncManager(StoragesManager, HostsManager):
     def __init__(self, user_id=None, host_id=None, remote_cfg=None,
                  remote_type=None, remote_name=None, remote_path=None,
                  path=None):
-        StoragesManager.__init__(self, user_id=user_id)
-        HostsManager.__init__(self, user_id=user_id)
+        if remote_name:
+            StoragesManager.__init__(self, user_id=user_id, storage_name=remote_name)
+            HostsManager.__init__(self, user_id=user_id, hostname=remote_name)
+        else:
+            StoragesManager.__init__(self, user_id=user_id)
+            HostsManager.__init__(self, user_id=user_id)
         self.user_id = user_id
         self.host_id = host_id 
         self.remote_type = remote_type

@@ -70,7 +70,7 @@
         {% for host in hosts_info %}
         <tr>
           <td><input type="checkbox" /></td>
-          <td>{{ host.hostname }}</td>
+          <td><a style="cursor: pointer">{{ host.hostname }}</a></td>
           <td>{{ host.ipaddress }}</td>
           <td>{{ host.port }}</td>
           <td>{{ host.username }}</td>
